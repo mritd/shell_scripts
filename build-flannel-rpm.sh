@@ -1,7 +1,6 @@
 #!/bin/bash
 
 flannel_version=$1
-echo -e  "\033[32mflannel version: $flannel_version\033[0m"
 
 if [ -z "$flannel_version" ] ;then
   echo -e "\033[33mflannel_version is blank!\033[0m"
@@ -9,6 +8,7 @@ if [ -z "$flannel_version" ] ;then
   exit 1
 fi
 
+echo -e  "\033[32mflannel version: $flannel_version\033[0m"
 echo -e "\033[33mclean old files!\033[0m"
 rm -rf flannel* 2>&1 >> /dev/null
 
