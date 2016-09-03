@@ -23,14 +23,17 @@ yum update -y 2>&1 >> /dev/null
 yum upgrade -y 2>&1 >> /dev/null
 yum install epel-release -y 2>&1 >> /dev/null
 
-# install ruby
+# install rpm-build
+echo -e  "\033[32minstall rpm-build...\033[0m"
+yum install rpm-build -y 2>&1 >> /dev/null
 
+# install ruby
 echo -e  "\033[32minstall rvm...\033[0m"
 
 PATH=$PATH:/usr/local/rvm/bin/:/usr/local/rvm/rubies/ruby-2.3.0/bin/
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 2>&1 >> /dev/null
 curl -sSL https://get.rvm.io | bash -s stable 2>&1 >> /dev/null
-mkdir -p ~/.rvm/user/ 
+mkdir -p ~/.rvm/user/
 echo "ruby_url=https://cache.ruby-china.org/pub/ruby" > ~/.rvm/user/db
 rvm requirements 2>&1 >> /dev/null
 
