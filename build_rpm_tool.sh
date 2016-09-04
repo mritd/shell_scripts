@@ -207,11 +207,8 @@ EOF
 fi
 
 
-echo -e  "\033[32mmove rpms...\033[0m"
-mv *.rpm ../build_rpms
-
-echo -e  "\033[32mremove tmp dir...\033[0m"
-cd ../ && rm -rf build_tmp
+echo -e  "\033[32mmove rpms and remove tmp dir...\033[0m"
+mv *.rpm ../build_rpms && cd ../ && rm -rf build_tmp
 
 echo -e "\033[32mbuild seccess!\033[0m"
 
