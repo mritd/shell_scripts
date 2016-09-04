@@ -164,7 +164,7 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
     echo -e "\033[32m$binName download success...\033[0m"
   done
 
-  echo -e "\033[32mdownload flannel old k8s...\033[0m"
+  echo -e "\033[32mdownload old kubernetes...\033[0m"
   wget http://upyun.mritd.me/rpms/kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm > /dev/null 2>&1
 
   echo -e  "\033[32munpackage rpm...\033[0m"
