@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script is used to create etcd | flannel | kubernetes RPM installation package
-# You can use the "./build_rpm_tool.sh etcd VERSION" to create a etcd RPM installation package
-# Kubernetes and flannel use the same command to create the RPM installation package
+# This script is used to create etcd | flannel | kubernetes RPM
+# You can use the "./build_rpm_tool.sh etcd VERSION" to create a etcd RPM
+# Kubernetes and flannel use the same command to create the RPM 
 
 targetModel=$1
 version=$2
