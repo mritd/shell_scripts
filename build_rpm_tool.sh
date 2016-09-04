@@ -83,14 +83,14 @@ getent passwd etcd >/dev/null || useradd -r -g etcd -d /var/lib/etcd \
 EOF
 
   tee postinstall.sh > /dev/null 2>&1 <<EOF
-if [ $1 -eq 1 ] ; then
+if [ \$1 -eq 1 ] ; then
         # Initial installation
         systemctl preset etcd.service >/dev/null 2>&1 || :
 fi
 EOF
 
   tee preuninstall.sh > /dev/null 2>&1 <<EOF
-if [ $1 -eq 0 ] ; then
+if [ \$1 -eq 0 ] ; then
         # Package removal, not upgrade
         systemctl --no-reload disable etcd.service > /dev/null 2>&1 || :
         systemctl stop etcd.service > /dev/null 2>&1 || :
@@ -128,7 +128,7 @@ elif [ "$targetModel" == "flannel" ];then
 
   echo -e  "\033[32mmake rpm scripts...\033[0m"
   tee postinstall.sh > /dev/null 2>&1 <<EOF
-if [ $1 -eq 1 ] ; then
+if [ \$1 -eq 1 ] ; then
         # Initial installation
         systemctl preset flanneld.service >/dev/null 2>&1 || :
 fi
@@ -136,7 +136,7 @@ EOF
 
   tee preuninstall.sh > /dev/null 2>&1 <<EOF
 # clean tempdir and workdir on removal or upgrade
-if [ $1 -eq 0 ] ; then
+if [ \$1 -eq 0 ] ; then
         # Package removal, not upgrade
         systemctl --no-reload disable flanneld.service > /dev/null 2>&1 || :
         systemctl stop flanneld.service > /dev/null 2>&1 || :
@@ -145,7 +145,7 @@ EOF
 
   tee postuninstall.sh > /dev/null 2>&1 <<EOF
 systemctl daemon-reload >/dev/null 2>&1 || :
-if [ $1 -ge 1 ] ; then
+if [ \$1 -ge 1 ] ; then
         # Package upgrade, not uninstall
         systemctl try-restart flanneld.service >/dev/null 2>&1 || :
 fi
@@ -183,14 +183,14 @@ getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
 EOF
 
   tee postinstall.sh > /dev/null 2>&1 <<EOF
-if [ $1 -eq 1 ] ; then
+if [ \$1 -eq 1 ] ; then
         # Initial installation
         systemctl preset kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy >/dev/null 2>&1 || :
 fi
 EOF
 
   tee preuninstall.sh > /dev/null 2>&1 <<EOF
-if [ $1 -eq 0 ] ; then
+if [ \$1 -eq 0 ] ; then
         # Package removal, not upgrade
         systemctl --no-reload disable kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy > /dev/null 2>&1 || :
         systemctl stop kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy > /dev/null 2>&1 || :
