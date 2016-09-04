@@ -80,7 +80,6 @@ if [ "$targetModel" == "etcd" ];then
 getent group etcd >/dev/null || groupadd -r etcd
 getent passwd etcd >/dev/null || useradd -r -g etcd -d /var/lib/etcd \\
         -s /sbin/nologin -c "etcd user" etcd
-chown -R etcd.etcd /var/lib/etcd
 EOF
 
   tee postinstall.sh > /dev/null 2>&1 <<EOF
@@ -88,6 +87,7 @@ if [ \$1 -eq 1 ] ; then
         # Initial installation
         systemctl preset etcd.service >/dev/null 2>&1 || :
 fi
+chown -R etcd.etcd /var/lib/etcd
 EOF
 
   tee preuninstall.sh > /dev/null 2>&1 <<EOF
