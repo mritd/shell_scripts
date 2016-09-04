@@ -2,7 +2,7 @@
 
 # This script is used to create etcd | flannel | kubernetes RPM
 # You can use the "./build_rpm_tool.sh etcd VERSION" to create a etcd RPM
-# Kubernetes and flannel use the same command to create the RPM 
+# Kubernetes and flannel use the same command to create the RPM
 
 targetModel=$1
 version=$2
@@ -78,7 +78,7 @@ if [ "$targetModel" == "etcd" ];then
   echo -e  "\033[32mmake rpm scripts...\033[0m"
   tee preinstall.sh > /dev/null 2>&1 <<EOF
 getent group etcd >/dev/null || groupadd -r etcd
-getent passwd etcd >/dev/null || useradd -r -g etcd -d /var/lib/etcd \
+getent passwd etcd >/dev/null || useradd -r -g etcd -d /var/lib/etcd \\
         -s /sbin/nologin -c "etcd user" etcd
 EOF
 
@@ -178,7 +178,7 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e  "\033[32mmake rpm scripts...\033[0m"
   tee preinstall.sh > /dev/null 2>&1 <<EOF
 getent group kube >/dev/null || groupadd -r kube
-getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
+getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \\
         -c "Kubernetes user" kube
 EOF
 
