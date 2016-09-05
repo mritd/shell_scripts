@@ -63,6 +63,10 @@ if [ "$targetModel" == "etcd" ];then
   echo -e "\033[32mdownload etcd release package...\033[0m"
   wget https://github.com/coreos/etcd/releases/download/v$version/etcd-v$version-linux-amd64.tar.gz > /dev/null 2>&1
   tar -zxvf etcd-v$version-linux-amd64.tar.gz > /dev/null 2>&1
+  if [ ! -f etcd-v$version-linux-amd64.tar.gz ]; then
+    echo -e "\033[31merror: download etcd release package failed!\033[0m"
+    exit 1
+  fi
 
   echo -e "\033[32mdownload etcd old rpm...\033[0m"
   yumdownloader etcd > /dev/null 2>&1
@@ -112,6 +116,10 @@ elif [ "$targetModel" == "flannel" ];then
   echo -e "\033[32mdownload flannel release package...\033[0m"
   wget https://github.com/coreos/flannel/releases/download/v$version/flannel-v$version-linux-amd64.tar.gz > /dev/null 2>&1
   tar -zxvf flannel-v$version-linux-amd64.tar.gz > /dev/null 2>&1
+  if [ ! -f flannel-v$version-linux-amd64.tar.gz ]; then
+    echo -e "\033[31merror: download flannel release package failed!\033[0m"
+    exit 1
+  fi
 
   echo -e "\033[32mdownload flannel old rpm...\033[0m"
   yumdownloader flannel > /dev/null 2>&1
@@ -161,12 +169,20 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e "\033[32mdownload k8s release package...\033[0m"
   for binName in kubectl kube-dns hyperkube kubemark kube-apiserver kube-controller-manager kube-scheduler kube-proxy kubelet;do
     wget https://storage.googleapis.com/kubernetes-release/release/v$version/bin/linux/amd64/$binName -O $binName > /dev/null 2>&1
+    if [ ! -f $binName ]; then
+      echo -e "\033[31merrot: download $binName failed!\033[0m"
+      exit 1
+    fi
     chmod +x $binName
     echo -e "\033[32m$binName download success...\033[0m"
   done
 
   echo -e "\033[32mdownload old kubernetes...\033[0m"
   wget http://upyun.mritd.me/rpms/kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm > /dev/null 2>&1
+  if [ ! -f kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm ]; then
+    echo -e "\033[31merror: download kubernetes old rpm failed!\033[0m"
+    exit 1
+  fi
 
   echo -e  "\033[32munpackage rpm...\033[0m"
   rpm2cpio *.rpm | cpio -idmv > /dev/null 2>&1
