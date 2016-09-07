@@ -167,7 +167,7 @@ EOF
 
 elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e "\033[32mdownload k8s release package...\033[0m"
-  for binName in kubectl kube-dns hyperkube kubemark kube-apiserver kube-controller-manager kube-scheduler kube-proxy kubelet;do
+  for binName in federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler;do
     wget https://storage.googleapis.com/kubernetes-release/release/v$version/bin/linux/amd64/$binName -O $binName > /dev/null 2>&1
     if [ ! -f $binName ]; then
       echo -e "\033[31merrot: download $binName failed!\033[0m"
@@ -190,7 +190,7 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
 
   echo -e  "\033[32mreplace new files...\033[0m"
   rm -f usr/bin/*
-  cp kubectl kube-dns hyperkube kubemark kube-apiserver kube-controller-manager kube-scheduler kube-proxy kubelet usr/bin/
+  cp federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler usr/bin/
 
   echo -e  "\033[32mmake rpm scripts...\033[0m"
   tee preinstall.sh > /dev/null 2>&1 <<EOF
