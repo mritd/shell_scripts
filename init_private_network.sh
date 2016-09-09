@@ -37,6 +37,9 @@ if [ "$MAC_ADDRESS" == "" ]; then
   fi
 fi
 
+echo -e "\033[32mupdate /etc/sysconfig/network-scripts/ifcfg-$ETH_BUMBER...\033[0m"
+echo ""
+
 # setting network
 tee /etc/sysconfig/network-scripts/ifcfg-$ETH_BUMBER <<EOF
 DEVICE=$ETH_BUMBER
@@ -49,16 +52,31 @@ IPADDR=$IPADDR
 NETMASK=$NETMASK
 EOF
 
+echo ""
+echo -e "\033[32mupdate  /etc/iproute2/rt_tables...\033[0m"
+echo ""
+
 tee /etc/iproute2/rt_tables <<EOF
-201     gate1       $IPADDR
+201     gate1
 EOF
+
+echo ""
+echo -e "\033[32mupdate  /etc/sysconfig/network-scripts/rule-$ETH_BUMBER...\033[0m"
+echo ""
 
 tee /etc/sysconfig/network-scripts/rule-$ETH_BUMBER <<EOF
 from $IPADDR table gate1
 EOF
 
+echo ""
+echo -e "\033[32mupdate  /etc/sysconfig/network-scripts/route-$ETH_BUMBER...\033[0m"
+echo ""
+
 tee /etc/sysconfig/network-scripts/route-$ETH_BUMBER <<EOF
 default via $IPADDR table gate1
 EOF
 
-#systemctl restart network
+echo ""
+echo -e "\033[32mrestart network...\033[0m"
+
+systemctl restart network
