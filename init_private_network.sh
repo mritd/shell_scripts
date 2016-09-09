@@ -28,7 +28,7 @@ fi
 MAC_ADDRESS=$4
 
 if [ "$MAC_ADDRESS" == "" ]; then
-  yum update -y && yum upgrade -y && yum install net-tools
+  yum update -y && yum upgrade -y && yum install net-tools >> /dev/null 2>&1
   MAC_ADDRESS=`ifconfig "$ETH_BUMBER" | grep ether | awk -F" " '{print $2}'`
   if [ "$MAC_ADDRESS" == "" ]; then
     echo -e "\033[33mget MAC_ADDRESS"
@@ -36,7 +36,7 @@ if [ "$MAC_ADDRESS" == "" ]; then
     exit 1
   fi
 fi
-https://www.conoha.jp/conoben/archives/10174
+
 # setting network
 tee /etc/sysconfig/network-scripts/ifcfg-"$ETH_BUMBER" >> /dev/null 2>&1 <<EOF
 DEVICE="$ETH_BUMBER"
