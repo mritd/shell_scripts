@@ -38,29 +38,27 @@ if [ "$MAC_ADDRESS" == "" ]; then
 fi
 
 # setting network
-tee /etc/sysconfig/network-scripts/ifcfg-"$ETH_BUMBER" >> /dev/null 2>&1 <<EOF
-DEVICE="$ETH_BUMBER"
+tee /etc/sysconfig/network-scripts/ifcfg-$ETH_BUMBER <<EOF
+DEVICE=$ETH_BUMBER
 TYPE=Ethernet
-HWADDR="$MAC_ADDRESS"
+HWADDR=$MAC_ADDRESS
 ONBOOT=yes
 NM_CONTROLLED=no
 BOOTPROTO=static
-IPADDR="$IPADDR"
-NETMASK="$NETMASK"
+IPADDR=$IPADDR
+NETMASK=$NETMASK
 EOF
 
-tee /etc/iproute2/rt_tables >> /dev/null 2>&1 <<EOF
-201     gate1       "$IPADDR"
+tee /etc/iproute2/rt_tables <<EOF
+201     gate1       $IPADDR
 EOF
 
-tee /etc/sysconfig/network-scripts/rule-"$ETH_BUMBER" >> /dev/null 2>&1 <<EOF
-from "$IPADDR" table gate1
+tee /etc/sysconfig/network-scripts/rule-$ETH_BUMBER <<EOF
+from $IPADDR table gate1
 EOF
 
-tee /etc/sysconfig/network-scripts/route-"$ETH_BUMBER" >> /dev/null 2>&1 <<EOF
-default via "$IPADDR" table gate1
+tee /etc/sysconfig/network-scripts/route-$ETH_BUMBER <<EOF
+default via $IPADDR table gate1
 EOF
 
-systemctl disable NetworkManager
-systemctl stop NetworkManager
-systemctl restart network
+#systemctl restart network
