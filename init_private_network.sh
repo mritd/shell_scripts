@@ -28,7 +28,7 @@ fi
 MAC_ADDRESS=$4
 
 if [ "$MAC_ADDRESS" == "" ]; then
-  yum update -y && yum upgrade -y && yum install net-tools >> /dev/null 2>&1
+  yum update -y >> /dev/null 2>&1 && yum upgrade -y >> /dev/null 2>&1 && yum install net-tools >> /dev/null 2>&1
   MAC_ADDRESS=`ifconfig "$ETH_BUMBER" | grep ether | awk -F" " '{print $2}'`
   if [ "$MAC_ADDRESS" == "" ]; then
     echo -e "\033[33mget MAC_ADDRESS"
