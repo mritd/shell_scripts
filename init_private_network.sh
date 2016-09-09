@@ -13,7 +13,7 @@ fi
 
 NETMASK=$2
 
-if [ ""$NETMASK"" == "" ]; then
+if [ "$NETMASK" == "" ]; then
   echo -e "\033[33merror: netmask is blank\033[0m"
   echo -e "\033[32muse ./init_private_neiwork.sh IPADDRESS NETMASK [ETH_BUMBER] [MAC_ADDRESS]\033[0m"
   exit 1
@@ -22,7 +22,7 @@ fi
 ETH_BUMBER=$3
 
 if [ "$ETH_BUMBER" == "" ]; then
-  ETH_BUMBER = "eth1"
+  ETH_BUMBER="eth1"
 fi
 
 MAC_ADDRESS=$4
