@@ -164,7 +164,6 @@ EOF
   fpm -s dir -t rpm -n "flannel" -v $version --post-install postinstall.sh --pre-uninstall preuninstall.sh --post-uninstall postuninstall.sh etc run usr > /dev/null 2>&1
 
 
-
 elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e "\033[32mdownload k8s release package...\033[0m"
   for binName in federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler;do
