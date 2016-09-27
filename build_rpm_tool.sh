@@ -38,13 +38,13 @@ yum update -y > /dev/null 2>&1
 yum upgrade -y > /dev/null 2>&1
 
 echo -e "\033[32minstall build tools...\033[0m"
-yum install wget curl git rpm-build epel-release yum-utils -y > /dev/null 2>&1
+yum install wget which curl git rpm-build epel-release yum-utils -y > /dev/null 2>&1
 
 # install rvm and ruby
 echo -e "\033[32minstall rvm...\033[0m"
 PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 > /dev/null 2>&1
-curl -sSL https://get.rvm.io | bash -s stable > /dev/null 2>&1
+gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
 echo "ruby_url=https://cache.ruby-china.org/pub/ruby" >> /usr/local/rvm/user/db
 rvm requirements > /dev/null 2>&1
 
