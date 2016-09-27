@@ -34,45 +34,46 @@ mkdir build_tmp  && cd build_tmp
 
 # update
 echo -e "\033[32msystem updating...\033[0m"
-yum update -y > /dev/null 2>&1
-yum upgrade -y > /dev/null 2>&1
+yum update -y
+yum upgrade -y
 
 echo -e "\033[32minstall build tools...\033[0m"
-yum install wget which curl git rpm-build epel-release yum-utils -y > /dev/null 2>&1
+yum install wget which zlib zlib-devel curl git rpm-build epel-release yum-utils -y
 
 # install rvm and ruby
 echo -e "\033[32minstall rvm...\033[0m"
 PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
-gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+wget http://upyun.mritd.me/keys/rvm.key -O rvm.key
+gpg2 --import rvm.key
 curl -sSL https://get.rvm.io | bash -s stable
 echo "ruby_url=https://cache.ruby-china.org/pub/ruby" >> /usr/local/rvm/user/db
-rvm requirements > /dev/null 2>&1
+rvm requirements
 
 echo -e  "\033[32minstall ruby...\033[0m"
-rvm install 2.3.0 > /dev/null 2>&1
-rvm use 2.3.0 --default > /dev/null 2>&1
+rvm install 2.3.0
+rvm use 2.3.0 --default
 
 echo -e  "\033[32minstall bundler...\033[0m"
-gem install bundler > /dev/null 2>&1
+gem install bundler
 
 echo -e  "\033[32minstall fpm...\033[0m"
-gem install fpm > /dev/null 2>&1
+gem install fpm
 
 # download target package and make package
 if [ "$targetModel" == "etcd" ];then
   echo -e "\033[32mdownload etcd release package...\033[0m"
-  wget https://github.com/coreos/etcd/releases/download/v$version/etcd-v$version-linux-amd64.tar.gz > /dev/null 2>&1
-  tar -zxvf etcd-v$version-linux-amd64.tar.gz > /dev/null 2>&1
+  wget https://github.com/coreos/etcd/releases/download/v$version/etcd-v$version-linux-amd64.tar.gz
+  tar -zxvf etcd-v$version-linux-amd64.tar.gz
   if [ ! -f etcd-v$version-linux-amd64.tar.gz ]; then
     echo -e "\033[31merror: download etcd release package failed!\033[0m"
     exit 1
   fi
 
   echo -e "\033[32mdownload etcd old rpm...\033[0m"
-  yumdownloader etcd > /dev/null 2>&1
+  yumdownloader etcd
 
   echo -e  "\033[32munpackage rpm...\033[0m"
-  rpm2cpio *.rpm | cpio -idmv > /dev/null 2>&1
+  rpm2cpio *.rpm | cpio -idmv
   rm -f *.rpm
 
   echo -e  "\033[32mreplace new files...\033[0m"
@@ -80,13 +81,13 @@ if [ "$targetModel" == "etcd" ];then
   cp etcd-v$version-linux-amd64/{etcd,etcdctl} usr/bin
 
   echo -e  "\033[32mmake rpm scripts...\033[0m"
-  tee preinstall.sh > /dev/null 2>&1 <<EOF
+  tee preinstall.sh  <<EOF
 getent group etcd >/dev/null || groupadd -r etcd
 getent passwd etcd >/dev/null || useradd -r -g etcd -d /var/lib/etcd \\
         -s /sbin/nologin -c "etcd user" etcd
 EOF
 
-  tee postinstall.sh > /dev/null 2>&1 <<EOF
+  tee postinstall.sh  <<EOF
 if [ \$1 -eq 1 ] ; then
         # Initial installation
         systemctl preset etcd.service >/dev/null 2>&1 || :
@@ -94,38 +95,38 @@ fi
 chown -R etcd.etcd /var/lib/etcd
 EOF
 
-  tee preuninstall.sh > /dev/null 2>&1 <<EOF
+  tee preuninstall.sh  <<EOF
 if [ \$1 -eq 0 ] ; then
         # Package removal, not upgrade
-        systemctl --no-reload disable etcd.service > /dev/null 2>&1 || :
-        systemctl stop etcd.service > /dev/null 2>&1 || :
+        systemctl --no-reload disable etcd.service  || :
+        systemctl stop etcd.service  || :
 fi
 EOF
 
-  tee postuninstall.sh > /dev/null 2>&1 <<EOF
+  tee postuninstall.sh  <<EOF
 systemctl daemon-reload >/dev/null 2>&1 || :
 EOF
 
   echo -e  "\033[32mmake new rpm...\033[0m"
-  fpm -s dir -t rpm -n "etcd" -v $version --pre-install preinstall.sh --post-install postinstall.sh --pre-uninstall preuninstall.sh --post-uninstall postuninstall.sh etc usr var > /dev/null 2>&1
+  fpm -s dir -t rpm -n "etcd" -v $version --pre-install preinstall.sh --post-install postinstall.sh --pre-uninstall preuninstall.sh --post-uninstall postuninstall.sh etc usr var
 
 
 
 elif [ "$targetModel" == "flannel" ];then
 
   echo -e "\033[32mdownload flannel release package...\033[0m"
-  wget https://github.com/coreos/flannel/releases/download/v$version/flannel-v$version-linux-amd64.tar.gz > /dev/null 2>&1
-  tar -zxvf flannel-v$version-linux-amd64.tar.gz > /dev/null 2>&1
+  wget https://github.com/coreos/flannel/releases/download/v$version/flannel-v$version-linux-amd64.tar.gz
+  tar -zxvf flannel-v$version-linux-amd64.tar.gz
   if [ ! -f flannel-v$version-linux-amd64.tar.gz ]; then
     echo -e "\033[31merror: download flannel release package failed!\033[0m"
     exit 1
   fi
 
   echo -e "\033[32mdownload flannel old rpm...\033[0m"
-  yumdownloader flannel > /dev/null 2>&1
+  yumdownloader flannel
 
   echo -e  "\033[32munpackage rpm...\033[0m"
-  rpm2cpio *.rpm | cpio -idmv > /dev/null 2>&1
+  rpm2cpio *.rpm | cpio -idmv
   rm -f *.rpm
 
   echo -e  "\033[32mreplace new files...\033[0m"
@@ -136,23 +137,23 @@ elif [ "$targetModel" == "flannel" ];then
   cp mk-docker-opts.sh usr/libexec/flannel/mk-docker-opts.sh
 
   echo -e  "\033[32mmake rpm scripts...\033[0m"
-  tee postinstall.sh > /dev/null 2>&1 <<EOF
+  tee postinstall.sh  <<EOF
 if [ \$1 -eq 1 ] ; then
         # Initial installation
         systemctl preset flanneld.service >/dev/null 2>&1 || :
 fi
 EOF
 
-  tee preuninstall.sh > /dev/null 2>&1 <<EOF
+  tee preuninstall.sh  <<EOF
 # clean tempdir and workdir on removal or upgrade
 if [ \$1 -eq 0 ] ; then
         # Package removal, not upgrade
-        systemctl --no-reload disable flanneld.service > /dev/null 2>&1 || :
-        systemctl stop flanneld.service > /dev/null 2>&1 || :
+        systemctl --no-reload disable flanneld.service  || :
+        systemctl stop flanneld.service  || :
 fi
 EOF
 
-  tee postuninstall.sh > /dev/null 2>&1 <<EOF
+  tee postuninstall.sh  <<EOF
 systemctl daemon-reload >/dev/null 2>&1 || :
 if [ \$1 -ge 1 ] ; then
         # Package upgrade, not uninstall
@@ -161,14 +162,14 @@ fi
 EOF
 
   echo -e  "\033[32mmake new rpm...\033[0m"
-  fpm -s dir -t rpm -n "flannel" -v $version --post-install postinstall.sh --pre-uninstall preuninstall.sh --post-uninstall postuninstall.sh etc run usr > /dev/null 2>&1
+  fpm -s dir -t rpm -n "flannel" -v $version --post-install postinstall.sh --pre-uninstall preuninstall.sh --post-uninstall postuninstall.sh etc run usr
 
 
 elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e "\033[32mdownload k8s release package...\033[0m"
   for binName in federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler;do
-    echo -e "\033[32mdownload $binName..."
-    wget https://storage.googleapis.com/kubernetes-release/release/v$version/bin/linux/amd64/$binName -O $binName > /dev/null 2>&1
+    echo -e "\033[32mdownload $binName...\033[0m"
+    wget https://storage.googleapis.com/kubernetes-release/release/v$version/bin/linux/amd64/$binName -O $binName
     if [ ! -f $binName ]; then
       echo -e "\033[31merrot: download $binName failed!\033[0m"
       exit 1
@@ -178,14 +179,14 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   done
 
   echo -e "\033[32mdownload old kubernetes...\033[0m"
-  wget http://upyun.mritd.me/rpms/kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm > /dev/null 2>&1
+  wget http://upyun.mritd.me/rpms/kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm
   if [ ! -f kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm ]; then
     echo -e "\033[31merror: download kubernetes old rpm failed!\033[0m"
     exit 1
   fi
 
   echo -e  "\033[32munpackage rpm...\033[0m"
-  rpm2cpio *.rpm | cpio -idmv > /dev/null 2>&1
+  rpm2cpio *.rpm | cpio -idmv
   rm -f *.rpm
 
   echo -e  "\033[32mreplace new files...\033[0m"
@@ -193,33 +194,33 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   cp federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler usr/bin/
 
   echo -e  "\033[32mmake rpm scripts...\033[0m"
-  tee preinstall.sh > /dev/null 2>&1 <<EOF
+  tee preinstall.sh  <<EOF
 getent group kube >/dev/null || groupadd -r kube
 getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \\
         -c "Kubernetes user" kube
 EOF
 
-  tee postinstall.sh > /dev/null 2>&1 <<EOF
+  tee postinstall.sh  <<EOF
 if [ \$1 -eq 1 ] ; then
         # Initial installation
         systemctl preset kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy >/dev/null 2>&1 || :
 fi
 EOF
 
-  tee preuninstall.sh > /dev/null 2>&1 <<EOF
+  tee preuninstall.sh  <<EOF
 if [ \$1 -eq 0 ] ; then
         # Package removal, not upgrade
-        systemctl --no-reload disable kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy > /dev/null 2>&1 || :
-        systemctl stop kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy > /dev/null 2>&1 || :
+        systemctl --no-reload disable kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy  || :
+        systemctl stop kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy  || :
 fi
 EOF
 
-  tee postuninstall.sh > /dev/null 2>&1 <<EOF
+  tee postuninstall.sh  <<EOF
 systemctl daemon-reload >/dev/null 2>&1 || :
 EOF
 
   echo -e  "\033[32mmake new rpm...\033[0m"
-  fpm -s dir -t rpm -n "kubernetes" -v $version --pre-install preinstall.sh --post-install postinstall.sh --pre-uninstall preuninstall.sh --post-uninstall postuninstall.sh etc usr var > /dev/null 2>&1
+  fpm -s dir -t rpm -n "kubernetes" -v $version --pre-install preinstall.sh --post-install postinstall.sh --pre-uninstall preuninstall.sh --post-uninstall postuninstall.sh etc usr var
 
 fi
 
