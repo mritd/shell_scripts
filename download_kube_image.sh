@@ -25,3 +25,15 @@ for containerName in ${containers[@]} ; do
     exit 1
   fi
 done
+
+echo -e "\033[32mcreate images package...\033[0m"
+tar -zcvf ~/kube_images.tar.gz ~/kube_images
+
+if [ -f ~/kube_images.tar.gz ]; then
+  echo -e "\033[32mcreate images package success!\033[0m"
+  echo -e "\033[32mclean temp files...\033[0m"
+  rm -rf ~/kube_images
+else
+  echo -e "\033[31merror: create images package failed!\033[0m"
+  exit 1
+fi
