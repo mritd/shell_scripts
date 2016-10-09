@@ -7,6 +7,11 @@
 targetModel=$1
 version=$2
 
+function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
+function version_le() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" == "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+
 if [ -z "$targetModel" ] || [ -z "$version" ];then
   echo -e "\033[33mtargetModel or version is blank!\033[0m"
   echo -e "\033[32mUse ./build_rpm_tool.sh etcd|flannel|kubernetes VSERSION to build rpm\033[0m"
@@ -167,7 +172,11 @@ EOF
 
 elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e "\033[32mdownload k8s release package...\033[0m"
-  for binName in federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler;do
+  allBins=(federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler)
+  if [ version_ge $version 1.4]; then
+    allBins=(federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler kubeadm kubernetes-cni)
+  fi
+  for binName in ${allBins[@]};do
     echo -e "\033[32mdownload $binName...\033[0m"
     wget https://storage.googleapis.com/kubernetes-release/release/v$version/bin/linux/amd64/$binName -O $binName
     if [ ! -f $binName ]; then
