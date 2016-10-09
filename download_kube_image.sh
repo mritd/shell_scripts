@@ -3,7 +3,8 @@
 containers=(kube-proxy-amd64:v1.4.0 kube-discovery-amd64:1.0 kubedns-amd64:1.7 kube-scheduler-amd64:v1.4.0 kube-controller-manager-amd64:v1.4.0 kube-apiserver-amd64:v1.4.0 etcd-amd64:2.2.5 kube-dnsmasq-amd64:1.3 exechealthz-amd64:1.1 pause-amd64:3.0)
 
 echo -e "\033[33mclean old files!\033[0m"
-rm -rf ~/kube_images
+rm -rf ~/kube_images > /dev/null 2>&1
+rm -f ~/kube_images.tar.gz > /dev/null 2>&1
 
 echo -e "\033[32mcreate download directory...\033[0m"
 mkdir ~/kube_images
@@ -27,7 +28,7 @@ for containerName in ${containers[@]} ; do
 done
 
 echo -e "\033[32mcreate images package...\033[0m"
-tar -zcvf ~/kube_images.tar.gz ~/kube_images
+(cd ~/kube_images && tar -zcvf ~/kube_images.tar.gz *.tar)
 
 if [ -f ~/kube_images.tar.gz ]; then
   echo -e "\033[32mcreate images package success!\033[0m"
