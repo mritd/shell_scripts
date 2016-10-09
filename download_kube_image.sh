@@ -17,4 +17,11 @@ for containerName in ${containers[@]} ; do
   fi
   echo -e "\033[32msave image: $containerName...\033[0m"
   docker save gcr.io/google_containers/$containerName > ~/kube_images/$containerName.tar
+
+  if [ -f ~/kube_images/$containerName.tar ]; then
+    echo -e "\033[32mdownload $containerName image success!\033[0m"
+  else
+    echo -e "\033[31mdownload $containerName image failed!\033[0m"
+    exit 1
+  fi
 done
