@@ -173,7 +173,7 @@ EOF
 elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e "\033[32mdownload k8s release package...\033[0m"
   allBins=(federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler)
-  if [ version_ge $version 1.4]; then
+  if [ version_ge $version 1.4 ]; then
     allBins=(federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler kubeadm kubernetes-cni)
   fi
   for binName in ${allBins[@]};do
