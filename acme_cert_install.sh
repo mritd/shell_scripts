@@ -10,7 +10,7 @@ if [ "$shellName" == "zsh" ]; then
 else
   read -p "请输入 keypath 目录: " keypath
   read -p "请输入 certpath 目录: " certpath
-  read -p "请输入域名(多个以空格分割) :" domains
+  read -p "请输入域名(多个以空格分割): " domains
   read -p "请输入重载命令(非必选): " reloadcmd
 fi
 
@@ -26,6 +26,6 @@ for domainName in ${allDomian[@]}; do
 done
 
 ~/.acme.sh/acme.sh  --installcert $installcert \
-                    --keypath $keypath${allDomian[0]}.key \
-                    --certpath $certpath${allDomian[0]}.cer \
+                    --keypath $keypath/${allDomian[0]}.key \
+                    --certpath $certpath/${allDomian[0]}.cer \
                     --reloadcmd "$reloadcmd"
