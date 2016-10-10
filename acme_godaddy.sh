@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# SSL certificates are used to create the script of Let's Encrypt
+# Authentication method using Godaddy DNS
+# Example: ./acme_dns.sh GD_Key GD_Secret mritd.me cdn.mritd.me
+# GD_Key and GD_Secret can be obtained from Godaddy developer page
+
 export GD_Key=$1
 export GD_Secret=$2
 
