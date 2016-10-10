@@ -2,6 +2,13 @@
 
 GD_Key=$1
 GD_Secret=$2
+Domains=""
+
+for i in `seq 3 $#`;do
+  Domains+=" -d $3"
+  echo -e "\033[32mDomains: $3\033[0m"
+  shift
+done
 
 if [ "$GD_Key" == "" ];then
   echo -e "\033[31merror: GD_Key is blank!\033[0m"
@@ -14,7 +21,7 @@ if [ "$GD_Secret" == "" ];then
 fi
 
 echo -e "\033[32mSystem updateing.......\033[0m"
-yum update -y 
+yum update -y
 
 echo -e "\033[32mInstall nc and crontabs......\033[0m"
 yum install -y nc crontabs
@@ -31,7 +38,7 @@ echo -e "\033[32mCreate SSL CRT.......\033[0m"
 ~/.acme.sh/acme.sh   --issue   --dns dns_GD -d mritd.me -d www.mritd.me -d cdn.mritd.me
 
 echo -e "\033[32mCopy SSL CRT......\033[0m"
-~/.acme.sh/acme.sh  --installcert -d mritd.me -d www.mritd.me \
+~/.acme.sh/acme.sh  --installcert $Domains \
                     --keypath /etc/nginx/ssl/mritd.me.key \
                     --certpath /etc/nginx/ssl/mritd.me.cer \
                     --reloadcmd "cd /root/docker/mritd && docker-compose restart"
