@@ -19,7 +19,7 @@ yum update -y
 echo -e "\033[32mInstall nc and crontabs......\033[0m"
 yum install -y nc crontabs
 
-if ! $? ;then
+if [ ! "$?" == "0" ];then
   echo -e "\033[31mInstall nc or crontabs failed, System exiting!\033[0m"
   exit 1
 fi
@@ -34,8 +34,7 @@ echo -e "\033[32mCopy SSL CRT......\033[0m"
 ~/.acme.sh/acme.sh  --installcert -d mritd.me -d www.mritd.me \
                     --keypath /etc/nginx/ssl/mritd.me.key \
                     --certpath /etc/nginx/ssl/mritd.me.cer \
-                    --reloadcmd "cd /root/docker/mritd && docker-compose restart" 
+                    --reloadcmd "cd /root/docker/mritd && docker-compose restart"
 
 echo -e "\033[32mUpdate acme.sh......\033[0m"
 ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
-
