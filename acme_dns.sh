@@ -1,7 +1,7 @@
 #!/bin/bash
 
-GD_Key=$1
-GD_Secret=$2
+export GD_Key=$1
+export GD_Secret=$2
 
 for i in `seq 3 $#`;do
   Domains+=" -d $3"
