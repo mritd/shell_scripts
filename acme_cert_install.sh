@@ -1,9 +1,9 @@
 #!/bin/bash
 
-`which read` keypath -p "请输入 keypath 目录:"
-`which read` certpath -p "请输入 certpath 目录:"
-`which read` domains -p "请输入域名(多个以空格分割):"
-`which read` reloadcmd -p "请输入重载命令(非必选):"
+/usr/bin/read keypath -p "请输入 keypath 目录:"
+/usr/bin/read certpath -p "请输入 certpath 目录:"
+/usr/bin/read domains -p "请输入域名(多个以空格分割):"
+/usr/bin/read reloadcmd -p "请输入重载命令(非必选):"
 
 if [ "$keypath" == "" ] ||  [ "$certpath" == "" ] ||  [ "$domains" == "" ]; then
   echo -e "\033[31merror: keypath、certpath or domains is blank!"
