@@ -17,6 +17,9 @@ fi
 if [ "$keypath" == "" ] ||  [ "$certpath" == "" ] ||  [ "$domains" == "" ]; then
   echo -e "\033[31merror: keypath、certpath or domains is blank!"
   exit 1
+else
+  mkdir -p $keypath
+  mkdir -p $certpath
 fi
 
 allDomian=($domains)
