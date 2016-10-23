@@ -12,7 +12,7 @@ fi
 
 # Clean up related files
 echo -e "\033[32mStop kubelet...\033[0m"
-systemctl stop kubelet;
+systemctl stop kubelet > /dev/null 1>&2
 
 shellName=`ps | grep $$ | awk '{print $4}'`
 
