@@ -14,13 +14,7 @@ fi
 echo -e "\033[32mStop kubelet...\033[0m"
 systemctl stop kubelet > /dev/null 1>&2
 
-shellName=`ps | grep $$ | awk '{print $4}'`
-
-if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
-  read "cleanContainer?Do you want to clean up the Docker Container?(y/n): "
-else
-  read -p "Do you want to clean up the Docker Container?(y/n): " cleanContainer
-fi
+/usr/bin/read -p "Do you want to clean up the Docker Container?(y/n): " cleanContainer
 
 if [ "$cleanContainer"=="y" ]; then
   echo -e "\033[33mStart Deleting all Docker Containers...\033[0m"
@@ -79,11 +73,7 @@ for imageName in ${images[@]} ; do
 done
 
 # Processes the host name
-if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
-  read "hostName?Please enter a hostname(Example: 192-168-1-100.node): "
-else
-  read -p "Please enter a hostname?(Example: 192-168-1-100.node): " hostName
-fi
+/usr/bin/read -p "Please enter a hostname?(Example: 192-168-1-100.node): " hostName
 
 if [ "$hostName" != "" ]; then
   echo "$hostName" > /etc/hostname
@@ -94,11 +84,8 @@ else
 fi
 
 if [ "$nodeName"=="master" ]; then
-  if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
-    read "bindIP?Please enter the IP to bind(The Kubernetes API listens for this address): "
-  else
-    read -p "Please enter the IP to bind(The Kubernetes API listens for this address): " bindIP
-  fi
+
+  /usr/bin/read -p "Please enter the IP to bind(The Kubernetes API listens for this address): " bindIP
 
   if [ "bindIP" !="" ]; then
     kubeadm init --api-advertise-addresses=$bindIP
@@ -106,13 +93,9 @@ if [ "$nodeName"=="master" ]; then
     kubeadm init
   fi
 elif [ "$nodeName"=="node" ]; then
-  if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
-    read "kubeMasterToken?Enter the connection master token: "
-    read "kubeMasterIP?Please enter the master IP address: "
-  else
-    read -p "Enter the connection master token: " kubeMasterToken
-    read -p "Please enter the master IP address: " kubeMasterIP
-  fi
+
+  /usr/bin/read -p "Enter the connection master token: " kubeMasterToken
+  /usr/bin/read -p "Please enter the master IP address: " kubeMasterIP
 
   if [ "$kubeMasterToken" != "" ] || [ "$kubeMasterIP" != "" ]; then
     kubeadm join --token $kubeMasterToken $kubeMasterIP
