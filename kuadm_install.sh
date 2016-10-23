@@ -18,7 +18,7 @@ systemctl stop kubelet > /dev/null 1>&2
 
 if [ "$cleanContainer"=="y" ]; then
   echo -e "\033[33mStart Deleting all Docker Containers...\033[0m"
-  docker rm -f -v $(docker ps -q);
+  docker rm -f -v $(docker ps -q) > /dev/null 1>&2
   echo -e "\033[32mClean up the Docker Container successfully...\033[0m"
 fi
 
@@ -90,7 +90,7 @@ if [ "$nodeName"=="master" ]; then
 
   /usr/bin/read -p "Please enter the IP to bind(The Kubernetes API listens for this address): " bindIP
 
-  if [ "bindIP" !="" ]; then
+  if [ "bindIP"!="" ]; then
     kubeadm init --api-advertise-addresses=$bindIP
   else
     kubeadm init
@@ -100,7 +100,7 @@ elif [ "$nodeName"=="node" ]; then
   /usr/bin/read -p "Enter the connection master token: " kubeMasterToken
   /usr/bin/read -p "Please enter the master IP address: " kubeMasterIP
 
-  if [ "$kubeMasterToken" != "" ] || [ "$kubeMasterIP" != "" ]; then
+  if [ "$kubeMasterToken"!="" ] || [ "$kubeMasterIP"!="" ]; then
     kubeadm join --token $kubeMasterToken $kubeMasterIP
   else
     echo -e "\033[0mError: kubeMasterToken or kubeMasterIP is blank!\033[0m"
