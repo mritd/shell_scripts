@@ -30,7 +30,7 @@ fi
 rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd
 
 # Install the Kubernetes rpm package
-mkdir rpms
+rm -rf rpms && mkdir rpms
 yum install -y socat
 
 rpms=(kubectl-1.4.3-1.x86_64.rpm \
