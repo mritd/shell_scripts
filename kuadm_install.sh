@@ -31,7 +31,7 @@ rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd >/dev/null 1>&2
 
 # Install the Kubernetes rpm package
 
-mkdir rpms && cd rpms
+mkdir rpms
 
 yum install -y socat
 
@@ -41,10 +41,10 @@ rpms=(kubectl-1.4.3-1.x86_64.rpm \
       kubernetes-cni-0.3.0.1-1.07a8a2.x86_64.rpm )
 
 for rpmName in ${rpms[@]}; do
-  wget http://upyun.mritd.me/kubernetes/$rpmName
+  wget http://upyun.mritd.me/kubernetes/$rpmName -o rpms/$rpmName
 done
 
-rpm -ivh *.rpm && cd ../
+rpm -ivh rpms/*.rpm
 
 # Clean up related files(Kubelet installation will produce some useless configuration file)
 rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd >/dev/null 1>&2
@@ -58,7 +58,6 @@ systemctl start kubelet
 setenforce 0
 
 # Download adn Load the Kubernetes image
-mkdir images && cd images
 images=(kube-proxy-amd64:v1.4.1 \
         kube-discovery-amd64:1.0 \
         kubedns-amd64:1.7 \
@@ -76,12 +75,10 @@ for imageName in ${images[@]} ; do
   docker rmi mritd/$imageName
 done
 
-cd ../
-
 # Processes the host name
-/usr/bin/read -p "Please enter a hostname?(Example: 192-168-1-100.node): " hostName
+/usr/bin/read -p "Please enter a hostname(Example: 192-168-1-100.node): " hostName
 
-if [ "$hostName" != "" ]; then
+if [ "$hostName"!="" ]; then
   echo "$hostName" > /etc/hostname
   echo "127.0.0.1    $hostName" >> /etc/hosts
 else
