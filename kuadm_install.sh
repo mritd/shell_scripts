@@ -12,27 +12,25 @@ fi
 
 # Clean up related files
 echo -e "\033[32mStop kubelet...\033[0m"
-systemctl stop kubelet > /dev/null 1>&2
+systemctl stop kubelet
 
 /usr/bin/read -p "Do you want to clean up the Docker Container?(y/n): " cleanContainer
 
 if [ "$cleanContainer"=="y" ]; then
   echo -e "\033[33mStart Deleting all Docker Containers...\033[0m"
-  docker rm -f -v $(docker ps -q) > /dev/null 1>&2
+  docker rm -f -v $(docker ps -q)
   echo -e "\033[32mClean up the Docker Container successfully...\033[0m"
 fi
 
 echo -e "\033[32mClean up Kubernetes residual files...\033[0m"
 
 if [ -d /var/lib/kubelet ]; then
-  find /var/lib/kubelet | xargs -n 1 findmnt -n -t tmpfs -o TARGET -T | uniq | xargs -r umount -v >/dev/null 1>&2
+  find /var/lib/kubelet | xargs -n 1 findmnt -n -t tmpfs -o TARGET -T | uniq | xargs -r umount -v
 fi
-rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd >/dev/null 1>&2
+rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd
 
 # Install the Kubernetes rpm package
-
 mkdir rpms
-
 yum install -y socat
 
 rpms=(kubectl-1.4.3-1.x86_64.rpm \
@@ -41,7 +39,7 @@ rpms=(kubectl-1.4.3-1.x86_64.rpm \
       kubernetes-cni-0.3.0.1-1.07a8a2.x86_64.rpm )
 
 for rpmName in ${rpms[@]}; do
-  wget http://upyun.mritd.me/kubernetes/$rpmName -o rpms/$rpmName
+  wget http://upyun.mritd.me/kubernetes/$rpmName -O rpms/$rpmName
 done
 
 rpm -ivh rpms/*.rpm
