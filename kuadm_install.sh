@@ -58,6 +58,7 @@ systemctl start kubelet
 setenforce 0
 
 # Download adn Load the Kubernetes image
+mkdir images && cd images
 images=(kube-proxy-amd64:v1.4.1 \
         kube-discovery-amd64:1.0 \
         kubedns-amd64:1.7 \
@@ -74,6 +75,8 @@ for imageName in ${images[@]} ; do
   docker tag mritd/$imageName gcr.io/google_containers/$imageName
   docker rmi mritd/$imageName
 done
+
+cd ../
 
 # Processes the host name
 /usr/bin/read -p "Please enter a hostname?(Example: 192-168-1-100.node): " hostName
