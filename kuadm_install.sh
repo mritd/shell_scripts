@@ -23,7 +23,10 @@ if [ "$cleanContainer"=="y" ]; then
 fi
 
 echo -e "\033[32mClean up Kubernetes residual files...\033[0m"
-find /var/lib/kubelet | xargs -n 1 findmnt -n -t tmpfs -o TARGET -T | uniq | xargs -r umount -v >/dev/null 1>&2
+
+if [ -d /var/lib/kubelet ]; then
+  find /var/lib/kubelet | xargs -n 1 findmnt -n -t tmpfs -o TARGET -T | uniq | xargs -r umount -v >/dev/null 1>&2
+fi
 rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd >/dev/null 1>&2
 
 # Install the Kubernetes rpm package
