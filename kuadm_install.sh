@@ -16,13 +16,13 @@ systemctl stop kubelet > /dev/null 1>&2
 
 shellName=`ps | grep $$ | awk '{print $4}'`
 
-if [ "$shellName" == "zsh" ] || [ "$SHELL" == "/bin/zsh" ] || [ "$SHELL" == "/usr/bin/zsh" ]; then
+if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
   read "cleanContainer?Do you want to clean up the Docker Container?(y/n): "
 else
   read -p "Do you want to clean up the Docker Container?(y/n): " cleanContainer
 fi
 
-if [ "$cleanContainer" == "y" ]; then
+if [ "$cleanContainer"=="y" ]; then
   echo -e "\033[33mStart Deleting all Docker Containers...\033[0m"
   docker rm -f -v $(docker ps -q);
   echo -e "\033[32mClean up the Docker Container successfully...\033[0m"
@@ -79,7 +79,7 @@ for imageName in ${images[@]} ; do
 done
 
 # Processes the host name
-if [ "$shellName" == "zsh" ] || [ "$SHELL" == "/bin/zsh" ] || [ "$SHELL" == "/usr/bin/zsh" ]; then
+if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
   read "hostName?Please enter a hostname(Example: 192-168-1-100.node): "
 else
   read -p "Please enter a hostname?(Example: 192-168-1-100.node): " hostName
@@ -93,8 +93,8 @@ else
   exit 1
 fi
 
-if [ "$nodeName" == "master" ]; then
-  if [ "$shellName" == "zsh" ] || [ "$SHELL" == "/bin/zsh" ] || [ "$SHELL" == "/usr/bin/zsh" ]; then
+if [ "$nodeName"=="master" ]; then
+  if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
     read "bindIP?Please enter the IP to bind(The Kubernetes API listens for this address): "
   else
     read -p "Please enter the IP to bind(The Kubernetes API listens for this address): " bindIP
@@ -105,8 +105,8 @@ if [ "$nodeName" == "master" ]; then
   else
     kubeadm init
   fi
-elif [ "$nodeName" == "node" ]; then
-  if [ "$shellName" == "zsh" ] || [ "$SHELL" == "/bin/zsh" ] || [ "$SHELL" == "/usr/bin/zsh" ]; then
+elif [ "$nodeName"=="node" ]; then
+  if [ "$shellName"=="zsh" ] || [ "$SHELL"=="/bin/zsh" ] || [ "$SHELL"=="/usr/bin/zsh" ]; then
     read "kubeMasterToken?Enter the connection master token: "
     read "kubeMasterIP?Please enter the master IP address: "
   else
