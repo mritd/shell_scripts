@@ -180,8 +180,8 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   done
 
   echo -e "\033[32mdownload old kubernetes...\033[0m"
-  wget http://upyun.mritd.me/rpms/kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm
-  if [ ! -f kubernetes-1.3.6-gitae4550c.el7.centos.x86_64.rpm ]; then
+  wget http://upyun.mritd.me/kubernetes/kubernetes-1.4.0-1.x86_64.rpm
+  if [ ! -f kubernetes-1.4.0-1.x86_64.rpm ]; then
     echo -e "\033[31merror: download kubernetes old rpm failed!\033[0m"
     exit 1
   fi
