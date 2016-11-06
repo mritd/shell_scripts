@@ -2,11 +2,18 @@
 
 # This script is used to automatically install the Kubernetes 1.4 cluster using the kubeadm command
 
-nodeName=$1
+NODENAME=$1
+KUBEVERSION=$2
 
-if [ "$nodeName" != "master" ] && [ "$nodeName" != "node" ]; then
-  echo -e "\033[31mError: Enter master or node to create a Kubernetes cluster!\0mm[0m"
-  echo -e "\033[33mExample: ./$0 master | node\033[0m"
+if [ "$NODENAME" != "master" ] && [ "$NODENAME" != "node" ]; then
+  echo -e "\033[31mError: Enter master or node to create a Kubernetes cluster!\033[0m"
+  echo -e "\033[33mExample: ./$0 master | node v1.4.1\033[0m"
+  exit 1
+fi
+
+if [ "$KUBEVERSION" == "" ]; then
+  echo -e "\033[31mError: Please enter the version of kubernetes image to use!\033[0m]"
+  echo -e "\033[33mExample: ./$0 master | node v1.4.1\033[0m"
   exit 1
 fi
 
@@ -30,19 +37,16 @@ fi
 rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd
 
 # Install the Kubernetes rpm package
-rm -rf rpms && mkdir rpms
-yum install -y socat
+tee /etc/yum.repos.d/mritd.repo <<EOF
+[mritdrepo]
+name=Mritd Repository
+baseurl=https://rpm.mritd.me/centos/7/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://cdn.mritd.me/keys/rpm.public.key
+EOF
 
-rpms=(kubectl-1.4.3-1.x86_64.rpm \
-      kubeadm-1.5.0-1.alpha.1.409.714f816a349e79.x86_64.rpm \
-      kubelet-1.4.3-1.x86_64.rpm \
-      kubernetes-cni-0.3.0.1-1.07a8a2.x86_64.rpm )
-
-for rpmName in ${rpms[@]}; do
-  wget http://upyun.mritd.me/kubernetes/$rpmName -O rpms/$rpmName
-done
-
-rpm -ivh rpms/*.rpm
+yum install -y kubelet kubectl kubernetes-cni kubeadm ebtables
 
 # Clean up related files(Kubelet installation will produce some useless configuration file)
 rm -r -f /etc/kubernetes /var/lib/kubelet /var/lib/etcd >/dev/null 1>&2
@@ -56,17 +60,17 @@ systemctl start kubelet
 setenforce 0
 
 # Download adn Load the Kubernetes image
-images=(kube-proxy-amd64:v1.4.1 \
+images=(kube-proxy-amd64:$KUBEVERSION \
         kube-discovery-amd64:1.0 \
         kubedns-amd64:1.7 \
-        kube-scheduler-amd64:v1.4.1 \
-        kube-controller-manager-amd64:v1.4.1 \
-        kube-apiserver-amd64:v1.4.1 \
+        kube-scheduler-amd64:$KUBEVERSION \
+        kube-controller-manager-amd64:$KUBEVERSION \
+        kube-apiserver-amd64:$KUBEVERSION \
         etcd-amd64:2.2.5 \
         kube-dnsmasq-amd64:1.3 \
         exechealthz-amd64:1.1 \
         pause-amd64:3.0 \
-        kubernetes-dashboard-amd64:v1.4.1 )
+        kubernetes-dashboard-amd64:v1.4.1)
 for imageName in ${images[@]} ; do
   docker pull mritd/$imageName
   docker tag mritd/$imageName gcr.io/google_containers/$imageName
@@ -84,7 +88,7 @@ else
   exit 1
 fi
 
-if [ "$nodeName"=="master" ]; then
+if [ "$NODENAME"=="master" ]; then
 
   /usr/bin/read -p "Please enter the IP to bind(The Kubernetes API listens for this address): " bindIP
 
@@ -93,7 +97,7 @@ if [ "$nodeName"=="master" ]; then
   else
     kubeadm init
   fi
-elif [ "$nodeName"=="node" ]; then
+elif [ "$NODENAME"=="node" ]; then
 
   /usr/bin/read -p "Enter the connection master token: " kubeMasterToken
   /usr/bin/read -p "Please enter the master IP address: " kubeMasterIP
