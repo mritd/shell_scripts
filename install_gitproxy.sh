@@ -7,7 +7,7 @@ EOF
 
 chmod +x /usr/local/bin/proxy-wrapper
 
-tee .ssh/config <<EOF
+tee ~/.ssh/config <<EOF
 Host github github.com
 Hostname github.com
 User git
