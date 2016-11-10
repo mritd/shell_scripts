@@ -11,6 +11,8 @@ if [ "$1" == "" ]; then
   exit 1
 fi
 
+yum install -y lvm2
+
 if [ "$force_delete" != "" ] && [ "$force_delete" == "-f" ]; then
   echo -e "\033[33mForced to delete old devicemapper!\033[0m"
   lvremove docker -ff
@@ -26,12 +28,12 @@ fi
 echo -e "\033[32mCreate a physical volume replacing $device_name with your block device.\033[0m"
 if [ "$force_delete" == "-f" ]; then
   if ! pvcreate $device_name -ff ; then
-    echo -e "\033[31mError: Create a physical volume failed!\033[0m"  
+    echo -e "\033[31mError: Create a physical volume failed!\033[0m"
     exit 1
   fi
 else
   if ! pvcreate $device_name ; then
-    echo -e "\033[31mError: Create a physical volume failed!\033[0m"  
+    echo -e "\033[31mError: Create a physical volume failed!\033[0m"
     echo -e "\033[33mIf you want to continue, please use the -f option!\033[0m"
     exit 1
   fi
@@ -77,4 +79,3 @@ fi
 
 echo -e "\033[32mStart docker daemon.\033[0m"
 systemctl start docker
-
