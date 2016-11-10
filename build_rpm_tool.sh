@@ -167,7 +167,7 @@ EOF
 
 elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   echo -e "\033[32mdownload k8s release package...\033[0m"
-  allBins=(federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler)
+  allBins=(hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler)
   for binName in ${allBins[@]};do
     echo -e "\033[32mdownload $binName...\033[0m"
     wget https://storage.googleapis.com/kubernetes-release/release/v$version/bin/linux/amd64/$binName -O $binName
@@ -180,7 +180,7 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
   done
 
   echo -e "\033[32mdownload old kubernetes...\033[0m"
-  wget http://upyun.mritd.me/kubernetes/kubernetes-1.4.0-1.x86_64.rpm
+  wget http://upyun.mritd.me/kubernetes/kubernetes-1.4.5-git5a0a696.el7.centos.x86_64.rpm
   if [ ! -f kubernetes-1.4.0-1.x86_64.rpm ]; then
     echo -e "\033[31merror: download kubernetes old rpm failed!\033[0m"
     exit 1
@@ -192,7 +192,7 @@ elif [ "$targetModel" == "k8s" ] || [ "$targetModel" == "kubernetes" ]; then
 
   echo -e  "\033[32mreplace new files...\033[0m"
   rm -f usr/bin/*
-  cp federation-apiserver federation-controller-manager hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler usr/bin/
+  cp hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler usr/bin/
 
   echo -e  "\033[32mmake rpm scripts...\033[0m"
   tee preinstall.sh  <<EOF
