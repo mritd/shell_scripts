@@ -38,7 +38,10 @@ yum update -y
 yum upgrade -y
 
 echo -e "\033[32minstall build tools...\033[0m"
-yum install wget which zlib zlib-devel curl git rpm-build epel-release yum-utils -y
+yum install wget which zlib zlib-devel curl git rpm-build \
+    epel-release yum-utils libyaml-devel glibc-headers autoconf \
+    gcc-c++ glibc-devel readline-devel libffi-devel openssl-devel \
+    make automake libtool bison sqlite-devel -y
 
 # install rvm and ruby
 echo -e "\033[32minstall rvm...\033[0m"
