@@ -1,7 +1,7 @@
 #/bin/bash
 
 rm -f  ~/kubeadm_release/rpm/output/x86_64/*.rpm
-(cd ~/kubeadm_release/rpm && bash docker-build.sh)
+(cd ~/kubeadm_release/rpm && git pull && bash docker-build.sh)
 
 echo %_signature gpg > ~/.rpmmacros
 echo "%_gpg_name mritd (mritd rpm repository)" >> ~/.rpmmacros
