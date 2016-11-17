@@ -39,7 +39,7 @@ echo -e "\033[32mInstall acme.sh.......\033[0m"
 curl https://get.acme.sh | bash
 
 echo -e "\033[32mCreate SSL CRT.......\033[0m"
-~/.acme.sh/acme.sh --issue --dns dns_gd $Domains
+~/.acme.sh/acme.sh --issue --force --dns dns_gd $Domains
 
 echo -e "\033[32mUpdate acme.sh......\033[0m"
 ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
