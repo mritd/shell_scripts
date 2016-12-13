@@ -16,4 +16,4 @@ done
 docker exec -it mritd_rpm_1 /root/flush.sh
 
 # sync cdn
-syncrpm.sh
+`pwd`/syncrpm.sh
