@@ -8,8 +8,8 @@ EOF
 chmod +x /usr/local/bin/proxy-wrapper
 
 tee ~/.ssh/config <<EOF
-Host github github.com
-Hostname github.com
-User git
+Host github github.com mritd.me
+#Hostname github.com
+#User git
 ProxyCommand /usr/local/bin/proxy-wrapper '%h %p'
 EOF
