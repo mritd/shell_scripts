@@ -8,5 +8,6 @@ upx rm centos/7/x86_64/repodata/\*
 sleep 120
 
 # sync rpm
-cd /data && upx sync repo
+cd /data/centos/7/x86_64/ && for rpmName in `ls *.rpm`;do upx put $rpmName centos/7/x86_64/;done
+cd /data/centos/7/x86_64/repodata/ && for repodata in `ls`;do upx put $repodata centos/7/x86_64/repodata/;done
 
