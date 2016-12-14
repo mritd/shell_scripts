@@ -66,7 +66,8 @@ function _installdep(){
     yum install gcc glibc glibc-devel make openssl \
         openssl-devel pcre pcre-devel zlib zlib-devel \
         kernel-devel curl gnupg libxslt libxslt-devel \
-        gd-devel geoip-devel perl-devel lua lua-devel -y
+        gd-devel geoip-devel perl-devel perl-ExtUtils-Embed \
+        lua lua-devel -y
 }
 
 # download module dependencies
