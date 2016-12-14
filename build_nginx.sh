@@ -2,10 +2,10 @@
 
 # Nginx and module dependencies 
 NGINX_VERSION="1.11.5"
-LUAJIT_VERSION="2.0.4"
-LUAJIT_MAIN_VERSION="2.0"
-LUAJIT_LIB="/usr/local/lib"
-LUAJIT_INC="/usr/local/include/luajit-$LUAJIT_MAIN_VERSION"
+#LUAJIT_VERSION="2.0.4"
+#LUAJIT_MAIN_VERSION="2.0"
+#LUAJIT_LIB="/usr/local/lib"
+#LUAJIT_INC="/usr/local/include/luajit-$LUAJIT_MAIN_VERSION"
 NGINX_LUA_MODULE_VERSION="0.10.7"
 OPENSSL_VERSION="1.1.0c"
 HEADERS_MORE_VERSION="0.32"
@@ -58,7 +58,6 @@ NGINX_CONFIG="\
     --with-compat \
     --with-file-aio \
     --with-http_v2_module \
-    --with-ld-opt=-Wl,-rpath,${LUAJIT_LIB} \
     --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
     --add-module=/usr/src/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
     --add-module=/usr/src/nginx_upstream_check_module-${UPSTREAM_CHECK_VERSION} \
@@ -77,7 +76,7 @@ function _installdep(){
 # download module dependencies
 function _downloadfiles(){
     curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz
-    curl -fSL http://luajit.org/download/LuaJIT-${LUAJIT_VERSION}.tar.gz -o LuaJIT-${LUAJIT_VERSION}.tar.gz
+    #curl -fSL http://luajit.org/download/LuaJIT-${LUAJIT_VERSION}.tar.gz -o LuaJIT-${LUAJIT_VERSION}.tar.gz
     curl -fSL https://github.com/openresty/lua-nginx-module/archive/v${NGINX_LUA_MODULE_VERSION}.tar.gz -o lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
     curl -fSL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -o openssl-${OPENSSL_VERSION}.tar.gz
     curl -fSL https://github.com/openresty/headers-more-nginx-module/archive/v${HEADERS_MORE_VERSION}.tar.gz -o headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz 
@@ -85,7 +84,7 @@ function _downloadfiles(){
     curl -fSL https://github.com/simpl/ngx_devel_kit/archive/v${DEVEL_KIT_VERSION}.tar.gz -o ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
     
     tar -zxC /usr/src -f nginx.tar.gz
-    tar -zxC /usr/src -f LuaJIT-${LUAJIT_VERSION}.tar.gz
+    #tar -zxC /usr/src -f LuaJIT-${LUAJIT_VERSION}.tar.gz
     tar -zxC /usr/src -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
     tar -zxC /usr/src -f openssl-${OPENSSL_VERSION}.tar.gz
     tar -zxC /usr/src -f headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz
@@ -94,7 +93,7 @@ function _downloadfiles(){
     tar -zxC /usr/src -f ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
     
     rm -f nginx.tar.gz
-    rm -f LuaJIT-${LUAJIT_VERSION}.tar.gz  
+    #rm -f LuaJIT-${LUAJIT_VERSION}.tar.gz  
     rm -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
     rm -f openssl-${OPENSSL_VERSION}.tar.gz
     rm -f headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz
