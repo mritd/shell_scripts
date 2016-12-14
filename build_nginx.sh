@@ -34,7 +34,6 @@ CONFIG_ARGS="\
     --with-http_slice_module \
     --with-mail \
     --with-mail_ssl_module \
-    --with-compat \
     --with-file-aio \
     --with-http_v2_module \
     --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
