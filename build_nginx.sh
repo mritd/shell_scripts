@@ -111,8 +111,14 @@ function build_install(){
     make install
 }
 
+# clean
+function _clean(){
+    rm -rf /usr/src/*
+}    
+
 _installdep
 _downloadfiles
 build_install
+_clean
 
 
