@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Nginx 及模块版本
+# Nginx and module dependencies 
 NGINX_VERSION="1.11.5"
 LUAJIT_VERSION="2.0.4"
 LUAJIT_MAIN_VERSION="2.0"
@@ -12,9 +12,7 @@ HEADERS_MORE_VERSION="0.32"
 UPSTREAM_CHECK_VERSION="0.3.0"
 DEVEL_KIT_VERSION="0.3.0"
 
-GPG_KEYS="B0F4253373F8F6F510D42178520A9993A1C052F8"
-
-# 编译参数
+# build args
 NGINX_CONFIG="\
     --prefix=/etc/nginx \
     --sbin-path=/usr/sbin/nginx \
@@ -68,7 +66,7 @@ NGINX_CONFIG="\
     --add-module=/usr/src/lua-nginx-module-${NGINX_LUA_MODULE_VERSION} \
     "
 
-# 安装编译依赖
+# install build dependencies
 function _installdep(){
     yum install gcc glibc glibc-devel make openssl \
         openssl-devel pcre pcre-devel zlib zlib-devel \
@@ -76,7 +74,7 @@ function _installdep(){
         gd-devel geoip-devel perl-devel git python -y
 }
 
-# 下载依赖模块
+# download module dependencies
 function _downloadfiles(){
     curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz
     curl -fSL http://luajit.org/download/LuaJIT-${LUAJIT_VERSION}.tar.gz -o LuaJIT-${LUAJIT_VERSION}.tar.gz
@@ -95,18 +93,26 @@ function _downloadfiles(){
     tar -zxC /usr/src -f lua-nginx-module-v$NGINX_LUA_MODULE_VERSION.tar.gz
     tar -zxC /usr/src -f ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
     
-    #rm -f nginx.tar.gz
-    #rm -f LuaJIT-${LUAJIT_VERSION}.tar.gz  
-    #rm -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
-    #rm -f openssl-${OPENSSL_VERSION}.tar.gz
-    #rm -f headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz
-    #rm -f nginx_upstream_check_module-v${UPSTREAM_CHECK_VERSION}.tar.gz
-    #rm -f lua-nginx-module-v$NGINX_LUA_MODULE_VERSION.tar.gz
-    #rm -f ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
+    rm -f nginx.tar.gz
+    rm -f LuaJIT-${LUAJIT_VERSION}.tar.gz  
+    rm -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
+    rm -f openssl-${OPENSSL_VERSION}.tar.gz
+    rm -f headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz
+    rm -f nginx_upstream_check_module-v${UPSTREAM_CHECK_VERSION}.tar.gz
+    rm -f lua-nginx-module-v$NGINX_LUA_MODULE_VERSION.tar.gz
+    rm -f ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
 }
 
-# 编译 Lua
-function _buildLua(){
-    
+# build and install 
+function build_install(){
+    cd /usr/src/nginx-$NGINX_VERSION
+    ./configure $CONFIG --with-debug
+    make -j$(getconf _NPROCESSORS_ONLN)
+    make install
 }
+
+_installdep
+_downloadfiles
+build_install
+
 
