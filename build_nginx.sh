@@ -8,9 +8,11 @@ HEADERS_MORE_VERSION="0.31"
 UPSTREAM_CHECK_VERSION="0.3.0"
 DEVEL_KIT_VERSION="0.2.19"
 
+PREFIX=$1
+
 # build args
 CONFIG_ARGS="\
-    --prefix=/etc/nginx \
+    --prefix=${PREFIX:-'/usr/local/nginx'} \
     --pid-path=/var/run/nginx.pid \
     --lock-path=/var/run/nginx.lock \
     --with-http_ssl_module \
