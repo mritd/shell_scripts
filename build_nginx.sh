@@ -11,20 +11,8 @@ DEVEL_KIT_VERSION="0.2.19"
 # build args
 CONFIG_ARGS="\
     --prefix=/etc/nginx \
-    --sbin-path=/usr/sbin/nginx \
-    --modules-path=/usr/lib/nginx/modules \
-    --conf-path=/etc/nginx/nginx.conf \
-    --error-log-path=/var/log/nginx/error.log \
-    --http-log-path=/var/log/nginx/access.log \
     --pid-path=/var/run/nginx.pid \
     --lock-path=/var/run/nginx.lock \
-    --http-client-body-temp-path=/var/cache/nginx/client_temp \
-    --http-proxy-temp-path=/var/cache/nginx/proxy_temp \
-    --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
-    --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
-    --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
-    --user=nginx \
-    --group=nginx \
     --with-http_ssl_module \
     --with-http_realip_module \
     --with-http_addition_module \
@@ -43,11 +31,6 @@ CONFIG_ARGS="\
     --with-http_geoip_module=dynamic \
     --with-http_perl_module=dynamic \
     --with-threads \
-    --with-stream \
-    --with-stream_ssl_module \
-    --with-stream_ssl_preread_module \
-    --with-stream_realip_module \
-    --with-stream_geoip_module=dynamic \
     --with-http_slice_module \
     --with-mail \
     --with-mail_ssl_module \
