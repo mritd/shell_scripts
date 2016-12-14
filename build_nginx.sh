@@ -13,7 +13,7 @@ UPSTREAM_CHECK_VERSION="0.3.0"
 DEVEL_KIT_VERSION="0.3.0"
 
 # build args
-NGINX_CONFIG="\
+CONFIG_ARGS="\
     --prefix=/etc/nginx \
     --sbin-path=/usr/sbin/nginx \
     --modules-path=/usr/lib/nginx/modules \
@@ -105,7 +105,7 @@ function _downloadfiles(){
 # build and install 
 function build_install(){
     cd /usr/src/nginx-$NGINX_VERSION
-    ./configure $CONFIG --with-debug
+    ./configure $CONFIG_ARGS --with-debug
     make -j$(getconf _NPROCESSORS_ONLN)
     make install
 }
