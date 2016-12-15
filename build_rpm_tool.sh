@@ -54,7 +54,7 @@ function _update_installdep(){
 }
 
 function _install_ruby_fpm(){
-    
+
     PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
     # install rvm and ruby
     echo -e "\033[32minstall rvm...\033[0m"
@@ -249,7 +249,6 @@ EOF
 
 function build(){
 
-    cd build_tmp
     if [ "$targetModel" == "etcd" ];then
         build_etcd
     elif [ "$targetModel" == "flannel" ];then
