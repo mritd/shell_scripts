@@ -7,8 +7,6 @@
 targetModel=$1
 version=$2
 
-PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
-
 function _checkInput(){
     if [ -z "$targetModel" ] || [ -z "$version" ];then
         echo -e "\033[33mtargetModel or version is blank!\033[0m"
@@ -56,6 +54,8 @@ function _update_installdep(){
 }
 
 function _install_ruby_fpm(){
+    
+    PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
     # install rvm and ruby
     echo -e "\033[32minstall rvm...\033[0m"
     # wget http://upyun.mritd.me/keys/rvm.key -O rvm.key
@@ -249,6 +249,7 @@ EOF
 
 function build(){
 
+    cd build_tmp
     if [ "$targetModel" == "etcd" ];then
         build_etcd
     elif [ "$targetModel" == "flannel" ];then
