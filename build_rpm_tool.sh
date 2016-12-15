@@ -58,8 +58,7 @@ function _install_ruby_fpm(){
     PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
     # install rvm and ruby
     echo -e "\033[32minstall rvm...\033[0m"
-    # wget http://upyun.mritd.me/keys/rvm.key -O rvm.key
-    # gpg2 --import rvm.key
+    curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
     curl -sSL https://get.rvm.io | bash -s stable
     echo "ruby_url=https://cache.ruby-china.org/pub/ruby" >> /usr/local/rvm/user/db
     rvm requirements
