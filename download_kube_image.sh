@@ -2,7 +2,9 @@
 
 # This script is used to download some images and packaged kubernetes used
 
-images=(kube-proxy-amd64:v1.4.6 kube-discovery-amd64:1.0 kubedns-amd64:1.7 kube-scheduler-amd64:v1.4.6 kube-controller-manager-amd64:v1.4.6 kube-apiserver-amd64:v1.4.6 etcd-amd64:2.2.5 kube-dnsmasq-amd64:1.3 exechealthz-amd64:1.1 pause-amd64:3.0 kubernetes-dashboard-amd64:v1.4.2)
+KUBEVERSION=$1
+
+images=(kube-proxy-amd64:$KUBEVERSION kube-discovery-amd64:1.0 kubedns-amd64:1.7 kube-scheduler-amd64:$KUBEVERSION kube-controller-manager-amd64:$KUBEVERSION kube-apiserver-amd64:$KUBEVERSION etcd-amd64:3.0.14-kubeadm kube-dnsmasq-amd64:1.3 exechealthz-amd64:1.1 pause-amd64:3.0 kubernetes-dashboard-amd64:v1.5.0)
 
 echo -e "\033[33mclean old files!\033[0m"
 rm -rf ~/kube_images > /dev/null 2>&1
