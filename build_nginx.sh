@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Nginx and module dependencies 
-NGINX_VERSION="1.11.5"
+NGINX_VERSION="1.11.6"
 NGINX_LUA_MODULE_VERSION="0.10.7"
 OPENSSL_VERSION="1.0.1t"
 HEADERS_MORE_VERSION="0.32"
