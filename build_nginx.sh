@@ -12,7 +12,7 @@ PREFIX=$1
 
 # build args
 CONFIG_ARGS="\
-    --prefix=${PREFIX:-'/usr/local/nginx'} \
+    --prefix=${PREFIX:-/usr/local/nginx} \
     --pid-path=/var/run/nginx.pid \
     --lock-path=/var/run/nginx.lock \
     --with-http_ssl_module \
