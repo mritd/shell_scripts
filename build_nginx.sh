@@ -47,11 +47,11 @@ CONFIG_ARGS="\
     --add-module=/usr/src/nginx_upstream_check_module-${UPSTREAM_CHECK_VERSION} \
     --add-module=/usr/src/ngx_devel_kit-${DEVEL_KIT_VERSION} \
     --add-module=/usr/src/lua-nginx-module-${NGINX_LUA_MODULE_VERSION} \
-    --http-client-body-temp-path=/tmp/nginx/client_body_temp \
-    --http-proxy-temp-path=/tmp/nginx/proxy_temp \
-    --http-fastcgi-temp-path=/tmp/nginx/fastcgi_temp \
-    --http-uwsgi-temp-path=/tmp/nginx/uwsgi_temp \
-    --http-scgi-temp-path=/tmp/nginx/scgi_temp \
+    --http-client-body-temp-path=/tmp/client_body_temp \
+    --http-proxy-temp-path=/tmp/proxy_temp \
+    --http-fastcgi-temp-path=/tmp/fastcgi_temp \
+    --http-uwsgi-temp-path=/tmp/uwsgi_temp \
+    --http-scgi-temp-path=/tmp/scgi_temp \
     "
 
 # install build dependencies
