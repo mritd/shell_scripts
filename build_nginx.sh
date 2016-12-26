@@ -51,6 +51,7 @@ CONFIG_ARGS="\
 
 # install build dependencies
 function _installdep(){
+    echo -e "\033[32minstall build dependencies...\033[0m"
     yum install gcc glibc glibc-devel make openssl \
         openssl-devel pcre pcre-devel zlib zlib-devel \
         kernel-devel curl gnupg libxslt libxslt-devel \
@@ -60,6 +61,7 @@ function _installdep(){
 
 # download module dependencies
 function _downloadfiles(){
+    echo -e "\033[32mdownload module dependencies...\033[0m"
     curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz
     curl -fSL https://github.com/openresty/lua-nginx-module/archive/v${NGINX_LUA_MODULE_VERSION}.tar.gz -o lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
     curl -fSL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -o openssl-${OPENSSL_VERSION}.tar.gz
@@ -89,6 +91,7 @@ function _downloadfiles(){
 
 # install Lua
 function install_lua(){
+    echo -e "\033[32minstall Lua $LUAJIT_VERSION ...\033[0m"
     cd /usr/src/LuaJIT-$LUAJIT_VERSION
     make -j$(getconf _NPROCESSORS_ONLN)
     make install
@@ -96,6 +99,7 @@ function install_lua(){
 
 # install nginx
 function install_nginx(){
+    echo -e "\033[32minstall nginx $NGINX_VERSION ...\033[0m"
     cd /usr/src/nginx-$NGINX_VERSION
     ./configure $CONFIG_ARGS --with-debug
     make -j$(getconf _NPROCESSORS_ONLN)
@@ -104,6 +108,7 @@ function install_nginx(){
 
 # clean
 function _clean(){
+    echo -e "\033[32mcleaning files...\033[0m"
     rm -rf /usr/src/*
 }    
 
