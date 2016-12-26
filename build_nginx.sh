@@ -7,6 +7,9 @@ OPENSSL_VERSION="1.0.1t"
 HEADERS_MORE_VERSION="0.32"
 UPSTREAM_CHECK_VERSION="0.3.0"
 DEVEL_KIT_VERSION="0.3.0"
+LUAJIT_MAIN_VERSION="2.0"
+LUAJIT_LIB="/usr/local/lib"
+LUAJIT_INC="/usr/local/include/luajit-$LUAJIT_MAIN_VERSION"
 
 PREFIX=$1
 
@@ -62,6 +65,7 @@ function _downloadfiles(){
     curl -fSL https://github.com/openresty/headers-more-nginx-module/archive/v${HEADERS_MORE_VERSION}.tar.gz -o headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz 
     curl -fSL https://github.com/yaoweibin/nginx_upstream_check_module/archive/v${UPSTREAM_CHECK_VERSION}.tar.gz -o nginx_upstream_check_module-v${UPSTREAM_CHECK_VERSION}.tar.gz
     curl -fSL https://github.com/simpl/ngx_devel_kit/archive/v${DEVEL_KIT_VERSION}.tar.gz -o ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
+    curl -fSL http://luajit.org/download/LuaJIT-$LUAJIT_VERSION.tar.gz -o LuaJIT-$LUAJIT_VERSION.tar.gz
     
     tar -zxC /usr/src -f nginx.tar.gz
     tar -zxC /usr/src -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
@@ -70,6 +74,7 @@ function _downloadfiles(){
     tar -zxC /usr/src -f nginx_upstream_check_module-v${UPSTREAM_CHECK_VERSION}.tar.gz
     tar -zxC /usr/src -f lua-nginx-module-v$NGINX_LUA_MODULE_VERSION.tar.gz
     tar -zxC /usr/src -f ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
+    tar -zxC /usr/src -f LuaJIT-$LUAJIT_VERSION.tar.gz
     
     rm -f nginx.tar.gz
     rm -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
@@ -78,10 +83,18 @@ function _downloadfiles(){
     rm -f nginx_upstream_check_module-v${UPSTREAM_CHECK_VERSION}.tar.gz
     rm -f lua-nginx-module-v$NGINX_LUA_MODULE_VERSION.tar.gz
     rm -f ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
+    rm -f LuaJIT-$LUAJIT_VERSION.tar.gz
 }
 
-# build and install 
-function build_install(){
+# install Lua
+function install_lua(){
+    cd /usr/src/LuaJIT-$LUAJIT_VERSION
+    make -j$(getconf _NPROCESSORS_ONLN)
+    make install
+}    
+
+# install nginx
+function install_nginx(){
     cd /usr/src/nginx-$NGINX_VERSION
     ./configure $CONFIG_ARGS --with-debug
     make -j$(getconf _NPROCESSORS_ONLN)
@@ -95,7 +108,8 @@ function _clean(){
 
 _installdep
 _downloadfiles
-build_install
+install_lua
+install_nginx
 _clean
 
 
