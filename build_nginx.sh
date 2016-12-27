@@ -57,10 +57,10 @@ CONFIG_ARGS="\
 # install build dependencies
 function _installdep(){
     echo -e "\033[32minstall build dependencies...\033[0m"
-    yum install gcc glibc glibc-devel make openssl \
-        openssl-devel pcre pcre-devel zlib zlib-devel \
-        kernel-devel curl gnupg libxslt libxslt-devel \
-        gd-devel geoip-devel perl-devel perl-ExtUtils-Embed \
+    yum install gcc glibc glibc-devel make pcre \
+        pcre-devel zlib zlib-devel kernel-devel \
+        curl gnupg libxslt libxslt-devel gd-devel \
+        geoip-devel perl-devel perl-ExtUtils-Embed \
         lua lua-devel -y
 }
 
@@ -74,6 +74,9 @@ function _downloadfiles(){
     curl -fSL https://github.com/yaoweibin/nginx_upstream_check_module/archive/v${UPSTREAM_CHECK_VERSION}.tar.gz -o nginx_upstream_check_module-v${UPSTREAM_CHECK_VERSION}.tar.gz
     curl -fSL https://github.com/simpl/ngx_devel_kit/archive/v${DEVEL_KIT_VERSION}.tar.gz -o ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
     curl -fSL http://luajit.org/download/LuaJIT-$LUAJIT_VERSION.tar.gz -o LuaJIT-$LUAJIT_VERSION.tar.gz
+    #curl -fSL https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/openssl__chacha20_poly1305_draft_and_rfc_ossl102j.patch -o openssl__chacha20_poly1305_draft_and_rfc_ossl102j.patch
+    curl -fSL https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__dynamic_tls_records.patch -o nginx__dynamic_tls_records.patch
+    curl -fSL https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__http2_spdy.patch -o nginx__http2_spdy.patch
     
     tar -zxC /usr/src -f nginx.tar.gz
     tar -zxC /usr/src -f openssl-${OPENSSL_VERSION}.tar.gz
@@ -92,6 +95,17 @@ function _downloadfiles(){
     rm -f lua-nginx-module-v$NGINX_LUA_MODULE_VERSION.tar.gz
     rm -f ngx_devel_kit-v${DEVEL_KIT_VERSION}.tar.gz
     rm -f LuaJIT-$LUAJIT_VERSION.tar.gz
+
+    mv nginx__dynamic_tls_records.patch /usr/src/nginx-${NGINX_VERSION}
+    mv nginx__http2_spdy.patch /usr/src/nginx-${NGINX_VERSION}
+}
+
+# patch to nginx
+function _patch_nginx(){
+    echo -e "\033[32mpatch to nginx...\033[0m"
+    cd /usr/src/nginx-$NGINX_VERSION
+    patch -p1 < nginx__dynamic_tls_records.patch
+    patch -p1 < nginx__http2_spdy.patch
 }
 
 # install Lua
@@ -119,6 +133,7 @@ function _clean(){
 
 _installdep
 _downloadfiles
+_patch_nginx
 install_lua
 install_nginx
 _clean
