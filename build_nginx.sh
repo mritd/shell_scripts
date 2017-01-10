@@ -15,7 +15,19 @@ LUAJIT_MAIN_VERSION="2.0"
 LUAJIT_LIB="/usr/local/lib"
 LUAJIT_INC="/usr/local/include/luajit-$LUAJIT_MAIN_VERSION"
 
-PREFIX=$1
+HOME_DIR="/usr/local"
+INSTALL_TARGET="nginx"
+
+while getopts "hx" OPT; do
+  case $OPT in
+    h)
+        HOME_DIR=$OPTARG;;
+    x)
+        INSTALL_TARGET=$OPTARG;;
+
+  esac
+done
+
 
 # build args
 CONFIG_ARGS="\
