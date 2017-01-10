@@ -68,7 +68,7 @@ function _installdep(){
         pcre-devel zlib zlib-devel kernel-devel \
         curl gnupg libxslt libxslt-devel gd-devel \
         geoip-devel perl-devel perl-ExtUtils-Embed \
-        lua lua-devel -y
+        lua lua-devel patch -y
 }
 
 # download module dependencies
