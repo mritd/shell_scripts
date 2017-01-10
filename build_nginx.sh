@@ -137,8 +137,8 @@ function install_openssl(){
     make && make install
 
     echo -e "\033[32mbackup old files...\033[0m"
-    mv /usr/bin/openssl  /usr/bin/openssl.old
-    mv /usr/include/openssl  /usr/include/openssl.old
+    mv /usr/bin/openssl /usr/bin/openssl.old || true
+    mv /usr/include/openssl /usr/include/openssl.old || true
 
     # link new file
     ln -s /usr/local/ssl/bin/openssl  /usr/bin/openssl
