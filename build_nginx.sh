@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Nginx and module dependencies 
 NGINX_VERSION="1.11.7"
 NGINX_LUA_MODULE_VERSION="0.10.7"
