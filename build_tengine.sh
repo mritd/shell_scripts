@@ -143,6 +143,11 @@ function install_openssl(){
     # link new file
     ln -s /usr/local/ssl/bin/openssl  /usr/bin/openssl
     ln -s /usr/local/ssl/include/openssl  /usr/include/openssl
+
+    mv /usr/lib/libssl.so /usr/lib/libssl.so.old
+    mv /usr/local/lib64/libssl.so /usr/local/lib64/libssl.so.old
+
+    # link new lib
     ln -s /usr/local/ssl/lib/libssl.so /usr/lib/libssl.so
     ln -s /usr/local/ssl/lib/libssl.so /usr/local/lib64/libssl.so
 
