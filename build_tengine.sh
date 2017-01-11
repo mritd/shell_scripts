@@ -167,7 +167,7 @@ function install_lua(){
 # install nginx
 function install_nginx(){
     echo -e "\033[32minstall nginx $NGINX_VERSION ...\033[0m"
-    cd /usr/src/tengine-$NGINX_VERSION
+    cd /usr/src/tengine-$TENGINE_VERSION
     ./configure $CONFIG_ARGS --with-debug
     make -j$(getconf _NPROCESSORS_ONLN)
     make install
