@@ -35,7 +35,6 @@ CONFIG_ARGS="\
     --with-http_secure_link_module \
     --with-http_stub_status_module \
     --with-http_auth_request_module \
-    --with-http_xslt_module=dynamic \
     --with-http_image_filter_module=dynamic \
     --with-http_geoip_module=dynamic \
     --with-http_perl_module=dynamic \
