@@ -4,7 +4,6 @@ set -e
 
 # Nginx and module dependencies 
 NGINX_VERSION="1.11.7"
-TENGINE_VERSION="2.2.0"
 NGINX_LUA_MODULE_VERSION="0.10.7"
 OPENSSL_VERSION="1.0.2j"
 HEADERS_MORE_VERSION="0.32"
@@ -16,19 +15,7 @@ LUAJIT_MAIN_VERSION="2.0"
 LUAJIT_LIB="/usr/local/lib"
 LUAJIT_INC="/usr/local/include/luajit-$LUAJIT_MAIN_VERSION"
 
-HOME_DIR="/usr/local"
-INSTALL_TARGET="nginx"
-
-while getopts "hx" OPT; do
-  case $OPT in
-    h)
-        HOME_DIR=$OPTARG;;
-    x)
-        INSTALL_TARGET=$OPTARG;;
-
-  esac
-done
-
+PREFIX=$1
 
 # build args
 CONFIG_ARGS="\
@@ -195,5 +182,3 @@ install_openssl
 install_lua
 install_nginx
 _clean
-
-
