@@ -4,6 +4,8 @@
 # You can use the "./build_rpm_tool.sh etcd VERSION" to create a etcd RPM
 # Kubernetes and flannel use the same command to create the RPM
 
+set -e
+
 targetModel=$1
 version=$2
 
@@ -25,6 +27,9 @@ function _checkInput(){
 
 
 function _prebuild(){
+
+    PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
+
     echo -e "\033[33mclean old files!\033[0m"
     rm -rf build_tmp
     echo -e "\033[32mbuild $targetModel rpm!\033[0m"
@@ -36,7 +41,11 @@ function _prebuild(){
     mkdir build_tmp && cd build_tmp
 
     _update_installdep
-    _install_ruby_fpm
+    if [ -n `which fpm`]; then
+        _install_ruby_fpm
+    else
+        echo -e "\033[33mfpm exist!\033[0m" 
+    fi
 }
 
 
@@ -55,7 +64,6 @@ function _update_installdep(){
 
 function _install_ruby_fpm(){
 
-    PATH=$PATH:/usr/local/rvm/bin:/usr/local/rvm/rubies/ruby-2.3.0/bin
     # install rvm and ruby
     echo -e "\033[32minstall rvm...\033[0m"
     curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
@@ -190,7 +198,7 @@ function build_k8s(){
 
     echo -e "\033[32mdownload k8s release package...\033[0m"
     
-    allBins=(hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler)
+    allBins=(hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kube-proxy kube-scheduler)
     for binName in ${allBins[@]};do
         echo -e "\033[32mdownload $binName...\033[0m"
         wget https://storage.googleapis.com/kubernetes-release/release/v$version/bin/linux/amd64/$binName -O $binName
@@ -213,7 +221,7 @@ function build_k8s(){
 
     echo -e  "\033[32mreplace new files...\033[0m"
     rm -f usr/bin/*
-    cp hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kubemark kube-proxy kube-scheduler usr/bin/
+    cp hyperkube kube-apiserver kube-controller-manager kubectl kube-dns kubelet kube-proxy kube-scheduler usr/bin/
 
     echo -e  "\033[32mmake rpm scripts...\033[0m"
     tee preinstall.sh  <<EOF
