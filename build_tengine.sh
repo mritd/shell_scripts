@@ -2,9 +2,9 @@
 
 set -e
 
-# Nginx and module dependencies 
-NGINX_VERSION="1.11.7"
-NGINX_LUA_MODULE_VERSION="0.10.7"
+# Tengine and module dependencies 
+TENGINE_VERSION="2.2.0"
+NGINX_LUA_MODULE_VERSION="0.2.0"
 OPENSSL_VERSION="1.0.2j"
 HEADERS_MORE_VERSION="0.32"
 UPSTREAM_CHECK_VERSION="0.3.0"
@@ -19,7 +19,7 @@ PREFIX=$1
 
 # build args
 CONFIG_ARGS="\
-    --prefix=${PREFIX:-/usr/local/nginx} \
+    --prefix=${PREFIX:-/usr/local/tengine} \
     --pid-path=/var/run/nginx.pid \
     --lock-path=/var/run/nginx.lock \
     --with-http_ssl_module \
@@ -35,27 +35,14 @@ CONFIG_ARGS="\
     --with-http_secure_link_module \
     --with-http_stub_status_module \
     --with-http_auth_request_module \
-    --with-http_xslt_module=dynamic \
-    --with-http_image_filter_module=dynamic \
-    --with-http_geoip_module=dynamic \
-    --with-http_perl_module=dynamic \
     --with-threads \
-    --with-stream \
-    --with-stream_ssl_module \
-    --with-stream_ssl_preread_module \
-    --with-stream_realip_module \
-    --with-stream_geoip_module=dynamic \
     --with-http_slice_module \
     --with-mail \
     --with-mail_ssl_module \
     --with-file-aio \
     --with-http_v2_module \
     --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
-    --add-module=/usr/src/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
-    --add-module=/usr/src/nginx_upstream_check_module-${UPSTREAM_CHECK_VERSION} \
-    --add-module=/usr/src/ngx_devel_kit-${DEVEL_KIT_VERSION} \
     --add-module=/usr/src/lua-nginx-module-${NGINX_LUA_MODULE_VERSION} \
-    --add-module=/usr/src/nginx-ct-${NGINX_CT_VERSION} \
     --http-client-body-temp-path=/tmp/client_body_temp \
     --http-proxy-temp-path=/tmp/proxy_temp \
     --http-fastcgi-temp-path=/tmp/fastcgi_temp \
@@ -76,7 +63,7 @@ function _installdep(){
 # download module dependencies
 function _downloadfiles(){
     echo -e "\033[32mdownload module dependencies...\033[0m"
-    curl -fSL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx.tar.gz
+    curl -fSL http://tengine.taobao.org/download/tengine-${TENGINE_VERSION}.tar.gz -o tengine.tar.gz
     curl -fSL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -o openssl-${OPENSSL_VERSION}.tar.gz
     curl -fSL https://github.com/openresty/lua-nginx-module/archive/v${NGINX_LUA_MODULE_VERSION}.tar.gz -o lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
     curl -fSL https://github.com/openresty/headers-more-nginx-module/archive/v${HEADERS_MORE_VERSION}.tar.gz -o headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz 
@@ -88,7 +75,7 @@ function _downloadfiles(){
     #curl -fSL https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__http2_spdy.patch -o nginx__http2_spdy.patch
     curl -fSL https://github.com/grahamedgecombe/nginx-ct/archive/v${NGINX_CT_VERSION}.tar.gz -o nginx-ct-v${NGINX_CT_VERSION}.tar.gz
     
-    tar -zxC /usr/src -f nginx.tar.gz
+    tar -zxC /usr/src -f tengine.tar.gz
     tar -zxC /usr/src -f openssl-${OPENSSL_VERSION}.tar.gz
     tar -zxC /usr/src -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
     tar -zxC /usr/src -f headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz
@@ -98,7 +85,7 @@ function _downloadfiles(){
     tar -zxC /usr/src -f LuaJIT-$LUAJIT_VERSION.tar.gz
     tar -zxC /usr/src -f nginx-ct-v${NGINX_CT_VERSION}.tar.gz
     
-    rm -f nginx.tar.gz
+    rm -f tengine.tar.gz
     rm -f openssl-${OPENSSL_VERSION}.tar.gz
     rm -f lua-nginx-module-v${NGINX_LUA_MODULE_VERSION}.tar.gz
     rm -f headers-more-nginx-module-v${HEADERS_MORE_VERSION}.tar.gz
@@ -167,7 +154,7 @@ function install_lua(){
 # install nginx
 function install_nginx(){
     echo -e "\033[32minstall nginx $NGINX_VERSION ...\033[0m"
-    cd /usr/src/nginx-$NGINX_VERSION
+    cd /usr/src/tengine-$TENGINE_VERSION
     ./configure $CONFIG_ARGS --with-debug
     make -j$(getconf _NPROCESSORS_ONLN)
     make install
