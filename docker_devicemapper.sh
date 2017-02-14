@@ -71,7 +71,7 @@ rm -rf /var/lib/docker/*
 
 echo -e "\033[32mConfigure the Docker daemon with specific devicemapper options.\033[0m"
 if ! grep "\-\-storage-driver=devicemapper" /usr/lib/systemd/system/docker.service 2>&1 > /dev/null ;then
-  sed -i "s@ExecStart=/usr/bin/dockerd@ExecStart=/usr/bin/dockerd --storage-driver=devicemapper --storage-opt=dm.thinpooldev=/dev/mapper/docker-thinpool --storage-opt dm.use_deferred_removal=true @g" /usr/lib/systemd/system/docker.service
+  sed -i "s@ExecStart=/usr/bin/dockerd@ExecStart=/usr/bin/dockerd --storage-driver=devicemapper --storage-opt=dm.thinpooldev=/dev/mapper/docker-thinpool --storage-opt dm.use_deferred_removal=true --storage-opt=dm.use_deferred_deletion=true @g" /usr/lib/systemd/system/docker.service
   systemctl daemon-reload
 else
   echo -e "\033[33mFound '--storage-driver=devicemapper' option,not to replace!"
