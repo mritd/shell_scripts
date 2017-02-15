@@ -41,7 +41,7 @@ function _prebuild(){
     mkdir build_tmp && cd build_tmp
 
     _update_installdep
-    if [ -n `which fpm`]; then
+    if [ -n `which fpm` ]; then
         _install_ruby_fpm
     else
         echo -e "\033[33mfpm exist!\033[0m" 
