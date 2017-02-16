@@ -211,7 +211,7 @@ function build_k8s(){
     done
 
     echo -e "\033[32mdownload old kubernetes...\033[0m"
-    wget http://upyun.mritd.me/rpms/$BASEPACKAGE
+    wget http://mritdftp.b0.upaiyun.com/rpms/$BASEPACKAGE
     if [ ! -f $BASEPACKAGE ]; then
         echo -e "\033[31merror: download kubernetes old rpm failed!\033[0m"
         exit 1
