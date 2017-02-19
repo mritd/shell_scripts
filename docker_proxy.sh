@@ -11,14 +11,14 @@ if [ "$OS_TYPE" == "" ];then
 elif [ "$OS_TYPE" == "centos" ];then
     mkdir /etc/systemd/system/docker.service.d || true
     tee /etc/systemd/system/docker.service.d/socks5-proxy.conf <<-EOF
-    [Service]
-    Environment="ALL_PROXY=socks5://192.168.1.120:1083"
+[Service]
+Environment="ALL_PROXY=socks5://192.168.1.105:1080"
 EOF
 elif [ "$OS_TYPE" == "ubuntu" ];then
     mkdir /lib/systemd/system/docker.service.d || true
     tee /lib/systemd/system/docker.service.d/socks5-proxy.conf <<-EOF
-    [Service]
-    Environment="ALL_PROXY=socks5://192.168.1.120:1083"
+[Service]
+Environment="ALL_PROXY=socks5://192.168.1.120:1083"
 EOF
 fi
 
