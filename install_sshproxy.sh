@@ -2,7 +2,8 @@
 
 tee /usr/local/bin/proxy-wrapper <<EOF
 #!/bin/bash
-nc -x192.168.1.21:1083 -X5 \$*
+#nc -x192.168.1.21:1083 -X5 \$*
+connect-proxy -S 192.168.1.21:1083 $*
 EOF
 
 chmod +x /usr/local/bin/proxy-wrapper
