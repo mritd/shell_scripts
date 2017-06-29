@@ -8,8 +8,8 @@ kubectl config set-cluster default-cluster --server=${KUBE_API_SERVER} \
 
 kubectl config set-credentials default-admin \
     --certificate-authority=${CERT_DIR}/ca.pem \
-    --client-key=${CERT_DIR}/admin-key.pem \
-    --client-certificate=${CERT_DIR}/admin.pem      
+    --client-key=${CERT_DIR}/apiserver-key.pem \
+    --client-certificate=${CERT_DIR}/apiserver.pem      
 
 kubectl config set-context default-system --cluster=default-cluster --user=default-admin
 kubectl config use-context default-system
