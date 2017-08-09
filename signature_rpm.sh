@@ -11,7 +11,7 @@ fi
 #yum install rpm-sign -y 
 
 # clean old files
-#rm -f /data/repo/centos/7/x86_64/{kubelet*,kubeadm*,kubernetes-cni*,kubectl*}
+rm -f /data/repo/centos/7/x86_64/kubernetes-*
 
 # signature rpms
 echo %_signature gpg > ~/.rpmmacros
