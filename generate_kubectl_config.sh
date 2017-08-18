@@ -4,10 +4,10 @@ KUBE_API_SERVER=$1
 CERT_DIR=${CERT_DIR-"."}
 
 kubectl config set-cluster default-cluster --server=${KUBE_API_SERVER} \
-    --certificate-authority=${CERT_DIR}/k8s-roor-ca.pem
+    --certificate-authority=${CERT_DIR}/k8s-root-ca.pem
 
 kubectl config set-credentials default-admin \
-    --certificate-authority=${CERT_DIR}/k8s-roor-ca.pem \
+    --certificate-authority=${CERT_DIR}/k8s-root-ca.pem \
     --client-key=${CERT_DIR}/admin-key.pem \
     --client-certificate=${CERT_DIR}/admin.pem      
 
