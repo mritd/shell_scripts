@@ -3,7 +3,7 @@
 REGISTRY_TOKEN=`sudo cat ~/.docker/config.json | base64 | tr -d '\n'`
 REGISTRY_ADDRESS=$1
 
-if [ "" == $REGISTRY_ADDRESS ]
+if [ "" == $REGISTRY_ADDRESS ]; then
     echo -e "\033[31mError: REGISTRY_ADDRESS is blank!\033[0m"
     exit 1
 fi
