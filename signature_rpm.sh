@@ -15,7 +15,7 @@ fi
 
 # signature rpms
 echo %_signature gpg > ~/.rpmmacros
-echo "%_gpg_name mritd (mritd rpm repository)" >> ~/.rpmmacros
+echo "%_gpg_name mritd" >> ~/.rpmmacros
 
 for rpmName in `ls ${RPM_DIR}/*.rpm`; do
   rpm --addsign $rpmName
