@@ -23,4 +23,4 @@ data:
 type: kubernetes.io/dockerconfigjson
 EOF
 kubectl create -f imagePullSecret.yaml
-kubectl patch serviceaccounts default -p "{\"imagePullSecrets\":[{\"name\":\"${REGISTRY_ADDRESS}\"}]}"
+kubectl patch serviceaccounts default -p "{\"imagePullSecrets\":[{\"name\":\"${REGISTRY_ADDRESS}\"}]}" -n ${NAMESPACE}
