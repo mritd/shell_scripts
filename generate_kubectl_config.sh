@@ -5,6 +5,7 @@ CERT_DIR=${2:-"/etc/kubernetes/ssl"}
 
 kubectl config set-cluster default-cluster --server=${KUBE_API_SERVER} \
     --certificate-authority=${CERT_DIR}/k8s-root-ca.pem \
+    --embed-certs=true \
     --kubeconfig=admin.kubeconfig
 
 kubectl config set-credentials default-admin \
