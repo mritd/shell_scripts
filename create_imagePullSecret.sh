@@ -3,7 +3,7 @@
 set -e
 
 REGISTRY_TOKEN=`sudo cat ~/.docker/config.json | base64 | tr -d '\n'`
-REGISTRY_ADDRESS=${REGISTRY_ADDRESS-:"reg.mritd.me"}
+REGISTRY_ADDRESS=${REGISTRY_ADDRESS:-"reg.mritd.me"}
 NAMESPACE=${NAMESPACE:-"default"}
 
 if [ "" == "${REGISTRY_ADDRESS}" ]; then
