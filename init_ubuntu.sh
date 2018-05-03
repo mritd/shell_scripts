@@ -30,13 +30,16 @@ function settimezone(){
 }
 
 function install_ohmyzsh(){
-    git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
-    wget ${OZ_CONFIG_DOWNLOAD_URL}
-    tar -zxvf ohmyzsh.tar.gz -C ~ && rm -f ohmyzsh.tar.gz
-    chsh -s $(grep /zsh$ /etc/shells | tail -1)
+    if [ ! -d "~/.oh-my-zsh" ]; then
+        git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
+        wget ${OZ_CONFIG_DOWNLOAD_URL}
+        tar -zxvf ohmyzsh.tar.gz -C ~ && rm -f ohmyzsh.tar.gz
+        chsh -s $(grep /zsh$ /etc/shells | tail -1)
+    fi
 }
 
 function config_vim(){
+    rm -rf ~/.vim ~/.vimrc
     wget ${VIM_CONFIG_DOWNLOAD_URL}
     tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
 }
