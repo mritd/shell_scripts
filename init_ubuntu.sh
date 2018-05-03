@@ -11,6 +11,10 @@ DOCKER_CONFIG_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/config/docker.
 CTOP_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/ctop/ctop-0.7.1-linux-amd64'
 DOCKER_COMPOSE_DOWNLOAD_URL="https://get.daocloud.io/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m`"
 
+if [ "$(lsb_release -cs)" == "bionic" ]; then
+    DOCKER_DEB="deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu artful stable"
+fi
+
 
 function sysupdate(){
     apt update -y
