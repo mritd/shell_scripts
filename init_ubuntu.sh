@@ -34,7 +34,7 @@ function settimezone(){
 }
 
 function install_ohmyzsh(){
-    if [ ! -d "~/.oh-my-zsh" ]; then
+    if [ ! -d ~/.oh-my-zsh ]; then
         git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
         wget ${OZ_CONFIG_DOWNLOAD_URL}
         tar -zxvf ohmyzsh.tar.gz -C ~ && rm -f ohmyzsh.tar.gz
@@ -43,9 +43,10 @@ function install_ohmyzsh(){
 }
 
 function config_vim(){
-    rm -rf ~/.vim ~/.vimrc
-    wget ${VIM_CONFIG_DOWNLOAD_URL}
-    tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
+    if [ ! -d ~/.vim ]; then
+        wget ${VIM_CONFIG_DOWNLOAD_URL}
+        tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
+    fi
 }
 
 function install_docker(){
