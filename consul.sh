@@ -43,6 +43,7 @@ install(){
 {
     "datacenter": "dc1",
     "data_dir": "/var/lib/consul",
+    "disable_update_check": true,
     "log_level": "INFO",
     "node_name": "consul1",
     "server": true,
