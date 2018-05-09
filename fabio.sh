@@ -8,15 +8,15 @@ FABIO_DONWLOAD_URL="https://github.com/fabiolb/fabio/releases/download/v${FABIO_
 preinstall(){
     getent group fabio >/dev/null || groupadd -r fabio
     getent passwd fabio >/dev/null || useradd -r -g fabio -d /var/lib/fabio -s /sbin/nologin -c "fabio user" fabio
+    if [ ! -d /etc/fabio ]; then
+        mkdir /etc/fabio
+    fi
 }
 
 postinstall(){
     # Initial installation
     systemctl --no-reload preset fabio.service >/dev/null 2>&1 || :
     systemctl enable fabio
-    if [ ! -d /etc/fabio ]; then
-        mkdir /etc/fabio
-    fi
 }
 
 preuninstall(){
