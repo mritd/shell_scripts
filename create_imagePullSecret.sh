@@ -3,11 +3,16 @@
 set -e
 
 REGISTRY_TOKEN=`sudo cat ~/.docker/config.json | base64 | tr -d '\n'`
-REGISTRY_ADDRESS=${REGISTRY_ADDRESS:-"reg.mritd.me"}
-NAMESPACE=${NAMESPACE:-"default"}
+REGISTRY_ADDRESS=${1}
+NAMESPACE=${2}
 
-if [ "reg.mritd.me" == "${REGISTRY_ADDRESS}" ]; then
+if [ "" == "${REGISTRY_ADDRESS}" ]; then
     echo -e "\033[33mWARNING: REGISTRY_ADDRESS is blank,use default value ==> reg.mritd.me\033[0m"
+    REGISTRY_ADDRESS="reg.mritd.me"
+fi
+if [ "" == "${NAMESPACE}" ]; then
+    echo -e "\033[33mWARNING: NAMESPACE is blank,use default value ==> default\033[0m"
+    NAMESPACE="default"
 fi
 
 
