@@ -37,7 +37,7 @@ function settimezone(){
 function install_ohmyzsh(){
     if [ ! -d ~/.oh-my-zsh ]; then
         git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
-        git clone ${OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL} ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
+        git clone ${OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL} ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         wget ${OZ_CONFIG_DOWNLOAD_URL}
         tar -zxvf ohmyzsh.tar.gz -C ~ && rm -f ohmyzsh.tar.gz
         chsh -s $(grep /zsh$ /etc/shells | tail -1)
