@@ -45,7 +45,8 @@ function install_ohmyzsh(){
 }
 
 function config_vim(){
-    if [ ! -d ~/.vim ]; then
+    curl -sLf https://spacevim.org/cn/install.sh | bash -s -- --install vim
+    if [ ! -d ~/.SpaceVim.d ]; then
         wget ${VIM_CONFIG_DOWNLOAD_URL}
         tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
     fi
