@@ -79,7 +79,7 @@ function install_dc(){
 sysupdate
 setlocale
 settimezone
-config_vim
+#config_vim
 install_ohmyzsh
 install_docker
 install_ctop
