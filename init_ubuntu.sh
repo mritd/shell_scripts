@@ -45,11 +45,8 @@ function install_ohmyzsh(){
 }
 
 function config_vim(){
-    curl -sLf https://spacevim.org/cn/install.sh | bash -s -- --install vim
-    if [ ! -d ~/.SpaceVim.d ]; then
-        wget ${VIM_CONFIG_DOWNLOAD_URL}
-        tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
-    fi
+    wget ${VIM_CONFIG_DOWNLOAD_URL}
+    tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
 }
 
 function install_docker(){
@@ -79,7 +76,7 @@ function install_dc(){
 sysupdate
 setlocale
 settimezone
-#config_vim
+config_vim
 install_ohmyzsh
 install_docker
 install_ctop
