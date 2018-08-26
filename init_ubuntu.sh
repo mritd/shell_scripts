@@ -13,8 +13,8 @@ CTOP_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/ctop/ctop-0.7.1-linux-a
 DOCKER_COMPOSE_DOWNLOAD_URL="https://get.daocloud.io/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m`"
 
 if [ "$(lsb_release -cs)" == "bionic" ]; then
-    systemctl stop cloud-config cloud-final cloud-init cloud-init-local systemd-resolved
-    systemctl dsiable cloud-config cloud-final cloud-init cloud-init-local systemd-resolved
+    systemctl stop cloud-config cloud-final cloud-init cloud-init-local
+    systemctl dsiable cloud-config cloud-final cloud-init cloud-init-local
 fi
 
 
