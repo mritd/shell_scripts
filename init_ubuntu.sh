@@ -14,7 +14,7 @@ DOCKER_COMPOSE_DOWNLOAD_URL="https://get.daocloud.io/docker/compose/releases/dow
 
 if [ "$(lsb_release -cs)" == "bionic" ]; then
     systemctl stop cloud-config cloud-final cloud-init cloud-init-local
-    systemctl dsiable cloud-config cloud-final cloud-init cloud-init-local
+    systemctl disable cloud-config cloud-final cloud-init cloud-init-local
 fi
 
 
