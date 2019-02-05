@@ -13,8 +13,11 @@ CTOP_DOWNLOAD_URL='https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-
 DOCKER_COMPOSE_DOWNLOAD_URL="https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64"
 
 if [ "$(lsb_release -cs)" == "bionic" ]; then
-    systemctl stop cloud-config cloud-final cloud-init cloud-init-local
-    systemctl disable cloud-config cloud-final cloud-init cloud-init-local
+    for svc in 'cloud-config cloud-final cloud-init cloud-init-local'; do
+        systemctl is-active --quiet ${svc} \
+            && systemctl stop ${svc} \
+            && systemctl disable ${svc}
+    done
 fi
 
 
