@@ -5,11 +5,11 @@
 # Example: ./acme_dns.sh GD_Key GD_Secret mritd.me cdn.mritd.me
 # GD_Key and GD_Secret can be obtained from Godaddy developer page
 
-export GD_Key=$1
-export GD_Secret=$2
+#export GD_Key=$1
+#export GD_Secret=$2
 
 for i in `seq 3 $#`;do
-  Domains+=" -d $3"
+  Domains+=" -d $1"
   echo -e "\033[32mDomains: $3\033[0m"
   shift
 done
