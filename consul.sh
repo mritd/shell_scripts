@@ -2,7 +2,7 @@
 
 set -e
 
-CONSUL_VERSION="1.0.7"
+CONSUL_VERSION="1.2.1"
 CONSUL_DONWLOAD_URL="https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip"
 
 preinstall(){

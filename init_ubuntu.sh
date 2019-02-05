@@ -5,6 +5,7 @@ set -e
 TZ='Asia/Shanghai'
 OZ_DOWNLOAD_URL='https://github.com/robbyrussell/oh-my-zsh.git'
 OZ_CONFIG_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/config/ohmyzsh.tar.gz'
+OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
 VIM_CONFIG_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/config/vim.tar.gz'
 DOCKER_DEB="deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
 DOCKER_CONFIG_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/config/docker.tar.gz'
@@ -12,14 +13,15 @@ CTOP_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/ctop/ctop-0.7.1-linux-a
 DOCKER_COMPOSE_DOWNLOAD_URL="https://get.daocloud.io/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m`"
 
 if [ "$(lsb_release -cs)" == "bionic" ]; then
-    DOCKER_DEB="deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu artful stable"
+    systemctl stop cloud-config cloud-final cloud-init cloud-init-local
+    systemctl disable cloud-config cloud-final cloud-init cloud-init-local
 fi
 
 
 function sysupdate(){
     apt update -y
     apt upgrade -y
-    apt install wget curl vim zsh ctags git htop tzdata -y
+    apt install wget curl vim zsh ctags git htop tzdata ipvsadm ipset -y
 }
 
 function setlocale(){
@@ -36,6 +38,7 @@ function settimezone(){
 function install_ohmyzsh(){
     if [ ! -d ~/.oh-my-zsh ]; then
         git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
+        git clone ${OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL} ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         wget ${OZ_CONFIG_DOWNLOAD_URL}
         tar -zxvf ohmyzsh.tar.gz -C ~ && rm -f ohmyzsh.tar.gz
         chsh -s $(grep /zsh$ /etc/shells | tail -1)
@@ -43,10 +46,8 @@ function install_ohmyzsh(){
 }
 
 function config_vim(){
-    if [ ! -d ~/.vim ]; then
-        wget ${VIM_CONFIG_DOWNLOAD_URL}
-        tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
-    fi
+    wget ${VIM_CONFIG_DOWNLOAD_URL}
+    tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
 }
 
 function install_docker(){
