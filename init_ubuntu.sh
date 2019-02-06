@@ -43,40 +43,41 @@ function install_ohmyzsh(){
     if [ ! -d ~/.oh-my-zsh ]; then
         git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
         git clone ${OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL} ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-        curl -L ${OZ_CONFIG_DOWNLOAD_URL} > ~/.zshrc
-        chsh -s $(grep /zsh$ /etc/shells | tail -1)
+        curl -sL ${OZ_CONFIG_DOWNLOAD_URL} > ~/.zshrc
+        chsh -sL $(grep /zsh$ /etc/shells | tail -1)
     fi
 }
 
 function config_vim(){
-    curl -L ${VIM_CONFIG_DOWNLOAD_URL} > ~/.vimrc
-    mkdir -p ~/.vim/pack/mritd/{start/opt}
+    curl -sL ${VIM_CONFIG_DOWNLOAD_URL} > ~/.vimrc
+    mkdir -p ~/.vim/pack/mritd/{start,opt}
     cd ~/.vim/pack/mritd/start
-    for addr in `curl -s ${VIM_PLUGINS_DOWNLOAD_URL}`; do
-       git clone ${addr}
+    for addr in `curl -sL ${VIM_PLUGINS_DOWNLOAD_URL}`; do
+        echo "git clone => ${addr}"
+        git clone ${addr} > /dev/null 2>&1
     done
 }
 
 function install_docker(){
-    apt install apt-transport-https ca-certificates curl software-properties-common -y
+    apt install apt-transport-https ca-certificates software-properties-common -y
     curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -
     echo ${DOCKER_DEB} > /etc/apt/sources.list.d/docker.list
     apt update -y
     apt install docker-ce -y
     mv /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.list.bak
     mv /lib/systemd/system/docker.service /lib/systemd/system/docker.service.bak
-    curl -L ${DOCKER_CONFIG_DOWNLOAD_URL} > /lib/systemd/system/docker.service
+    curl -sL ${DOCKER_CONFIG_DOWNLOAD_URL} > /lib/systemd/system/docker.service
     systemctl daemon-reload
     systemctl restart docker
 }
 
 function install_ctop(){
-    curl -L ${CTOP_DOWNLOAD_URL} > /usr/local/bin/ctop
+    curl -sL ${CTOP_DOWNLOAD_URL} > /usr/local/bin/ctop
     chmod +x /usr/local/bin/ctop
 }
 
 function install_dc(){
-    curl -L ${DOCKER_COMPOSE_DOWNLOAD_URL} > /usr/local/bin/docker-compose
+    curl -sL ${DOCKER_COMPOSE_DOWNLOAD_URL} > /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
 }
 
