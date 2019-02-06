@@ -50,8 +50,8 @@ function install_ohmyzsh(){
 
 function config_vim(){
     curl -sL ${VIM_CONFIG_DOWNLOAD_URL} > ~/.vimrc
-    mkdir -p ~/.vim/pack/mritd/{start,opt}
-    cd ~/.vim/pack/mritd/start
+    mkdir -p ~/.vim/pack/plugins/{start,opt}
+    cd ~/.vim/pack/plugins/start
     for addr in `curl -sL ${VIM_PLUGINS_DOWNLOAD_URL}`; do
         echo "git clone => ${addr}"
         git clone ${addr} > /dev/null 2>&1
