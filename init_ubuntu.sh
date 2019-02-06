@@ -6,7 +6,8 @@ TZ='Asia/Shanghai'
 OZ_DOWNLOAD_URL='https://github.com/robbyrussell/oh-my-zsh.git'
 OZ_CONFIG_DOWNLOAD_URL='https://git.io/fh9U2'
 OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
-VIM_CONFIG_DOWNLOAD_URL='https://mritdftp.b0.upaiyun.com/files/config/vim.tar.gz'
+VIM_CONFIG_DOWNLOAD_URL='https://git.io/fh9rI'
+VIM_PLUGINS_DOWNLOAD_URL='https://git.io/fh9r3'
 DOCKER_DEB="deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
 DOCKER_CONFIG_DOWNLOAD_URL='https://git.io/fh9Ui'
 CTOP_DOWNLOAD_URL='https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64'
@@ -48,8 +49,12 @@ function install_ohmyzsh(){
 }
 
 function config_vim(){
-    curl -L ${VIM_CONFIG_DOWNLOAD_URL} > vim.tar.gz
-    tar -zxvf vim.tar.gz -C ~ && rm -f vim.tar.gz
+    curl -L ${VIM_CONFIG_DOWNLOAD_URL} > ~/.vimrc
+    mkdir -p ~/.vim/pack/mritd/{start/opt}
+    cd ~/.vim/pack/mritd/start
+    for addr in `curl -s ${VIM_PLUGINS_DOWNLOAD_URL}`; do
+       git clone ${addr}
+    done
 }
 
 function install_docker(){
