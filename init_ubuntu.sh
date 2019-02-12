@@ -3,6 +3,7 @@
 set -e
 
 TZ='Asia/Shanghai'
+SOURCES_LIST_URL='https://git.io/fhQKL'
 OZ_DOWNLOAD_URL='https://github.com/robbyrussell/oh-my-zsh.git'
 OZ_CONFIG_DOWNLOAD_URL='https://git.io/fh9U2'
 OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
@@ -23,10 +24,13 @@ fi
 
 
 function sysupdate(){
+    mv /etc/apt/sources.list /etc/apt/sources.list.old
+    curl -sL ${SOURCES_LIST_URL} > /etc/apt/sources.list
     apt update -y
     apt upgrade -y
     apt install wget curl vim zsh ctags git htop tzdata ipvsadm ipset \
         stress sysstat -y
+    ssh-keyscan github.com >> ~/.ssh/known_hosts
 }
 
 function setlocale(){
