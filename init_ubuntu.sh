@@ -48,7 +48,7 @@ function install_ohmyzsh(){
         git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
         git clone ${OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL} ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         curl -sL ${OZ_CONFIG_DOWNLOAD_URL} > ~/.zshrc
-        chsh -sL $(grep /zsh$ /etc/shells | tail -1)
+        chsh -s $(grep /zsh$ /etc/shells | tail -1)
     fi
 }
 
