@@ -25,7 +25,8 @@ fi
 function sysupdate(){
     apt update -y
     apt upgrade -y
-    apt install wget curl vim zsh ctags git htop tzdata ipvsadm ipset -y
+    apt install wget curl vim zsh ctags git htop tzdata ipvsadm ipset \
+        stress sysstat -y
 }
 
 function setlocale(){
