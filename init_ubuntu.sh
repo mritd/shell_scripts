@@ -3,6 +3,7 @@
 set -e
 
 TZ='Asia/Shanghai'
+OS_RELEASE="$(lsb_release -cs)"
 SOURCES_LIST_URL='https://git.io/fhQ6B'
 DOCKER_LIST_URL='https://git.io/fhQ68'
 OZ_DOWNLOAD_URL='https://github.com/robbyrussell/oh-my-zsh.git'
@@ -14,14 +15,13 @@ DOCKER_CONFIG_DOWNLOAD_URL='https://git.io/fh9Ui'
 CTOP_DOWNLOAD_URL='https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64'
 DOCKER_COMPOSE_DOWNLOAD_URL="https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64"
 
-if [ "$(lsb_release -cs)" == "bionic" ]; then
+function disable_cloudinit(){
     for svc in 'cloud-config cloud-final cloud-init cloud-init-local'; do
         systemctl is-active --quiet ${svc} \
             && systemctl stop ${svc} \
             && systemctl disable ${svc}
     done
-fi
-
+}
 
 function setlocale(){
     locale-gen --purge en_US.UTF-8 zh_CN.UTF-8
@@ -31,7 +31,7 @@ function setlocale(){
 
 function sysupdate(){
     mv /etc/apt/sources.list /etc/apt/sources.list.old
-    curl -sL ${SOURCES_LIST_URL} > /etc/apt/sources.list
+    curl -sL ${SOURCES_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list
     apt update -y
     apt upgrade -y
     apt install -y apt-transport-https ca-certificates software-properties-common \
@@ -63,7 +63,7 @@ function config_vim(){
 }
 
 function install_docker(){
-    curl -sL ${DOCKER_LIST_URL} > /etc/apt/sources.list.d/docker.list
+    curl -sL ${DOCKER_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list.d/docker.list
     curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -
     apt update -y
     apt install docker-ce -y
@@ -84,6 +84,7 @@ function install_dc(){
     chmod +x /usr/local/bin/docker-compose
 }
 
+disable_cloudinit
 setlocale
 sysupdate
 settimezone
