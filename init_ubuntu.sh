@@ -24,14 +24,20 @@ function disable_cloudinit(){
 }
 
 function setlocale(){
-    locale-gen --purge en_US.UTF-8 zh_CN.UTF-8
-    echo 'LANG="en_US.UTF-8"' > /etc/default/locale
-    echo 'LANGUAGE="en_US:en"' >> /etc/default/locale
+    if [ ! -f /etc/locale.gen.bak ]; then
+	cp /etc/locale.gen /etc/locale.gen.bak
+	echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
+	echo 'zh_CN.UTF-8 UTF-8' >> /etc/locale.gen
+    fi
+    locale-gen --purge
+    localectl set-locale LANG=en_US.UTF-8
 }
 
 function sysupdate(){
-    mv /etc/apt/sources.list /etc/apt/sources.list.old
-    curl -sL ${SOURCES_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list
+    if [ ! -f /etc/apt/sources.list.bak ]; then
+    	cp /etc/apt/sources.list /etc/apt/sources.list.old
+    	curl -sL ${SOURCES_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list
+    fi
     apt update -y
     apt upgrade -y
     apt install -y apt-transport-https ca-certificates software-properties-common \
@@ -39,8 +45,7 @@ function sysupdate(){
 }
 
 function settimezone(){
-    ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
-    echo ${TZ} > /etc/timezone
+    timedatectl set-timezone ${TZ}
 }
 
 function install_ohmyzsh(){
