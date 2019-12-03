@@ -36,12 +36,12 @@ function setlocale(){
 function sysupdate(){
     if [ ! -f /etc/apt/sources.list.bak ]; then
     	cp /etc/apt/sources.list /etc/apt/sources.list.old
-    	curl -sL ${SOURCES_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list
+    	curl -fsSL ${SOURCES_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list
     fi
     apt update -y
     apt upgrade -y
     apt install -y apt-transport-https ca-certificates software-properties-common \
-        wget curl vim zsh ctags git htop tzdata conntrack ipvsadm ipset stress sysstat
+        wget vim zsh git htop tzdata conntrack ipvsadm ipset stress sysstat
 }
 
 function settimezone(){
@@ -52,40 +52,40 @@ function install_ohmyzsh(){
     if [ ! -d ~/.oh-my-zsh ]; then
         git clone --depth=1 ${OZ_DOWNLOAD_URL} ~/.oh-my-zsh
         git clone ${OZ_SYNTAX_HIGHLIGHTING_DOWNLOAD_URL} ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-        curl -sL ${OZ_CONFIG_DOWNLOAD_URL} > ~/.zshrc
+        curl -fsSL ${OZ_CONFIG_DOWNLOAD_URL} > ~/.zshrc
         chsh -s $(grep /zsh$ /etc/shells | tail -1)
     fi
 }
 
 function config_vim(){
-    curl -sL ${VIM_CONFIG_DOWNLOAD_URL} > ~/.vimrc
+    curl -fsSL ${VIM_CONFIG_DOWNLOAD_URL} > ~/.vimrc
     mkdir -p ~/.vim/pack/plugins/{start,opt}
     cd ~/.vim/pack/plugins/start
-    for addr in `curl -sL ${VIM_PLUGINS_DOWNLOAD_URL}`; do
+    for addr in `curl -fsSL ${VIM_PLUGINS_DOWNLOAD_URL}`; do
         echo "git clone => ${addr}"
         git clone ${addr} > /dev/null 2>&1
     done
 }
 
 function install_docker(){
-    curl -sL ${DOCKER_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list.d/docker.list
+    curl -fsSL ${DOCKER_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list.d/docker.list
     curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -
     apt update -y
     apt install docker-ce -y
     mv /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.list.bak
     mv /lib/systemd/system/docker.service /lib/systemd/system/docker.service.bak
-    curl -sL ${DOCKER_CONFIG_DOWNLOAD_URL} > /lib/systemd/system/docker.service
+    curl -fsSL ${DOCKER_CONFIG_DOWNLOAD_URL} > /lib/systemd/system/docker.service
     systemctl daemon-reload
     systemctl restart docker
 }
 
 function install_ctop(){
-    curl -sL ${CTOP_DOWNLOAD_URL} > /usr/local/bin/ctop
+    curl -fsSL ${CTOP_DOWNLOAD_URL} > /usr/local/bin/ctop
     chmod +x /usr/local/bin/ctop
 }
 
 function install_dc(){
-    curl -sL ${DOCKER_COMPOSE_DOWNLOAD_URL} > /usr/local/bin/docker-compose
+    curl -fsSL ${DOCKER_COMPOSE_DOWNLOAD_URL} > /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
 }
 
