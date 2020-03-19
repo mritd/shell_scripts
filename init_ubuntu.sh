@@ -47,6 +47,8 @@ function sysupdate(){
     apt upgrade -y
     apt install -y apt-transport-https ca-certificates software-properties-common \
         wget vim zsh git htop tzdata conntrack ipvsadm ipset stress sysstat axel
+    apt autoremove -y
+    apt autoclean -y
 }
 
 function settimezone(){
@@ -120,11 +122,12 @@ function install_termshark(){
     tar -zxf termshark.tar.gz
     mv termshark*/termshark /usr/local/bin/termshark
     rm -rf termshark*
+    apt install tshark -y
 }
 
 function install_osquery(){
     OSQUERY_KEY=1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ${OSQUERY_KEY} -y
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ${OSQUERY_KEY}
     add-apt-repository 'deb [arch=amd64] https://pkg.osquery.io/deb deb main' -y
     apt-get update -y
     apt-get install osquery -y
