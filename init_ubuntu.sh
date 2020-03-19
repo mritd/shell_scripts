@@ -14,6 +14,11 @@ VIM_PLUGINS_DOWNLOAD_URL='https://git.io/fh9r3'
 DOCKER_CONFIG_DOWNLOAD_URL='https://git.io/fh9Ui'
 CTOP_DOWNLOAD_URL='https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64'
 DOCKER_COMPOSE_DOWNLOAD_URL="https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64"
+HEY_DOWNLOAD_URL="https://storage.googleapis.com/hey-release/hey_linux_amd64"
+BAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-v0.12.1-x86_64-unknown-linux-gnu.tar.gz"
+SIMPLER_DOWNLOAD_URL="https://github.com/sqshq/sampler/releases/download/v1.1.0/sampler-1.1.0-linux-amd64"
+PERF_TOOLS_DOWNLOAD_URL="https://github.com/brendangregg/perf-tools"
+TERMSHARK_DOWNLOAD_URL="https://github.com/gcla/termshark/releases/download/v2.1.1/termshark_2.1.1_linux_x64.tar.gz"
 
 function disable_cloudinit(){
     for svc in 'cloud-config cloud-final cloud-init cloud-init-local'; do
@@ -41,7 +46,7 @@ function sysupdate(){
     apt update -y
     apt upgrade -y
     apt install -y apt-transport-https ca-certificates software-properties-common \
-        wget vim zsh git htop tzdata conntrack ipvsadm ipset stress sysstat
+        wget vim zsh git htop tzdata conntrack ipvsadm ipset stress sysstat axel fzf
 }
 
 function settimezone(){
@@ -89,6 +94,42 @@ function install_dc(){
     chmod +x /usr/local/bin/docker-compose
 }
 
+function install_hey(){
+    curl -fsSL ${HEY_DOWNLOAD_URL} > /usr/local/bin/hey
+    chmod +x /usr/local/bin/hey
+}
+
+function install_bat(){
+    curl -fsSL ${BAT_DOWNLOAD_URL} > bat.tar.gz
+    tar -zxf bat.tar.gz
+    mv bat-*/bat /usr/local/bin/bat
+    rm -rf bat*
+}
+
+function install_simpler(){
+    curl -fsSL ${SIMPLER_DOWNLOAD_URL} > /usr/local/bin/simpler
+    chmod +x /usr/local/bin/simpler
+}
+
+function install_pert-tools(){
+    git clone --depth 1 ${PERF_TOOLS_DOWNLOAD_URL} /usr/local/perf-tools
+}
+
+function install_termshark(){
+    curl -fsSL ${TERMSHARK_DOWNLOAD_URL} > termshark.tar.gz
+    tar -zxf termshark.tar.gz
+    mv termshark*/termshark /usr/local/bin/termshark
+    rm -rf termshark*
+}
+
+function install_osquery(){
+    OSQUERY_KEY=1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ${OSQUERY_KEY} -y
+    add-apt-repository 'deb [arch=amd64] https://pkg.osquery.io/deb deb main' -y
+    apt-get update -y
+    apt-get install osquery -y
+}
+
 disable_cloudinit
 setlocale
 sysupdate
@@ -98,3 +139,8 @@ install_ohmyzsh
 install_docker
 install_ctop
 install_dc
+install_hey
+install_bat
+install_simpler
+install_termshark
+install_osquery
