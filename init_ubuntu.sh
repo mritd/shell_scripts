@@ -46,7 +46,7 @@ function sysupdate(){
     apt update -y
     apt upgrade -y
     apt install -y apt-transport-https ca-certificates software-properties-common \
-        wget vim zsh git htop tzdata conntrack ipvsadm ipset stress sysstat axel fzf
+        wget vim zsh git htop tzdata conntrack ipvsadm ipset stress sysstat axel
 }
 
 function settimezone(){
