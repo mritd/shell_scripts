@@ -16,7 +16,6 @@ CTOP_DOWNLOAD_URL='https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-
 DOCKER_COMPOSE_DOWNLOAD_URL="https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64"
 HEY_DOWNLOAD_URL="https://storage.googleapis.com/hey-release/hey_linux_amd64"
 BAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-v0.12.1-x86_64-unknown-linux-gnu.tar.gz"
-SIMPLER_DOWNLOAD_URL="https://github.com/sqshq/sampler/releases/download/v1.1.0/sampler-1.1.0-linux-amd64"
 PERF_TOOLS_DOWNLOAD_URL="https://github.com/brendangregg/perf-tools"
 TERMSHARK_DOWNLOAD_URL="https://github.com/gcla/termshark/releases/download/v2.1.1/termshark_2.1.1_linux_x64.tar.gz"
 
@@ -30,9 +29,9 @@ function disable_cloudinit(){
 
 function setlocale(){
     if [ ! -f /etc/locale.gen.bak ]; then
-	cp /etc/locale.gen /etc/locale.gen.bak
-	echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
-	echo 'zh_CN.UTF-8 UTF-8' >> /etc/locale.gen
+        cp /etc/locale.gen /etc/locale.gen.bak
+        echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
+        echo 'zh_CN.UTF-8 UTF-8' >> /etc/locale.gen
     fi
     locale-gen --purge
     localectl set-locale LANG=en_US.UTF-8
@@ -40,8 +39,8 @@ function setlocale(){
 
 function sysupdate(){
     if [ ! -f /etc/apt/sources.list.bak ]; then
-    	cp /etc/apt/sources.list /etc/apt/sources.list.old
-    	curl -fsSL ${SOURCES_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list
+        cp /etc/apt/sources.list /etc/apt/sources.list.old
+        curl -fsSL ${SOURCES_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list
     fi
     apt update -y
     apt upgrade -y
@@ -108,11 +107,6 @@ function install_bat(){
     rm -rf bat*
 }
 
-function install_simpler(){
-    curl -fsSL ${SIMPLER_DOWNLOAD_URL} > /usr/local/bin/simpler
-    chmod +x /usr/local/bin/simpler
-}
-
 function install_pert-tools(){
     git clone --depth 1 ${PERF_TOOLS_DOWNLOAD_URL} /usr/local/perf-tools
 }
@@ -144,6 +138,5 @@ install_ctop
 install_dc
 install_hey
 install_bat
-install_simpler
 install_termshark
 install_osquery
