@@ -68,8 +68,7 @@ function config_vim(){
     mkdir -p ~/.vim/pack/plugins/{start,opt}
     cd ~/.vim/pack/plugins/start
     for addr in `curl -fsSL ${VIM_PLUGINS_DOWNLOAD_URL}`; do
-        echo "git clone => ${addr}"
-        git clone ${addr} > /dev/null 2>&1
+        git clone ${addr}
     done
 }
 
