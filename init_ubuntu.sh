@@ -73,11 +73,15 @@ function config_vim(){
 }
 
 function install_docker(){
-    curl -fsSL ${DOCKER_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list.d/docker.list
-    curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -
-    apt update -y
-    apt install docker-ce -y
-    mv /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.list.bak
+    if [ "${OS_RELEASE}" == "focal" ]; then
+        apt install docker.io -y
+    else
+        curl -fsSL ${DOCKER_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list.d/docker.list
+        curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -
+        apt update -y
+        apt install docker-ce -y
+        mv /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.list.bak
+    fi
     mv /lib/systemd/system/docker.service /lib/systemd/system/docker.service.bak
     curl -fsSL ${DOCKER_CONFIG_DOWNLOAD_URL} > /lib/systemd/system/docker.service
     systemctl daemon-reload
@@ -138,4 +142,4 @@ install_dc
 install_hey
 install_bat
 install_termshark
-install_osquery
+#install_osquery
