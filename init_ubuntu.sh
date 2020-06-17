@@ -75,10 +75,10 @@ function install_docker(){
         apt install docker-ce -y
         apt-mark hold docker-ce
     fi
-    SYSTEMD_EDITOR="curl -fsSL ${DOCKER_CONFIG_DOWNLOAD_URL} > "
-    systemctl edit docker
-    systemctl daemon-reload
-    systemctl restart docker
+    
+    curl -fsSL ${DOCKER_CONFIG_DOWNLOAD_URL} > docker.service
+    SYSTEMD_EDITOR="mv docker.service" systemctl edit docker
+    systemctl daemon-reload && systemctl restart docker
 }
 
 function install_ctop(){
