@@ -19,14 +19,6 @@ BAT_DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.12.1/bat-v
 PERF_TOOLS_DOWNLOAD_URL="https://github.com/brendangregg/perf-tools"
 TERMSHARK_DOWNLOAD_URL="https://github.com/gcla/termshark/releases/download/v2.1.1/termshark_2.1.1_linux_x64.tar.gz"
 
-function disable_cloudinit(){
-    for svc in 'cloud-config cloud-final cloud-init cloud-init-local'; do
-        systemctl is-active --quiet ${svc} \
-            && systemctl stop ${svc} \
-            && systemctl disable ${svc}
-    done
-}
-
 function setlocale(){
     if [ ! -f /etc/locale.gen.bak ]; then
         cp /etc/locale.gen /etc/locale.gen.bak
@@ -75,17 +67,18 @@ function config_vim(){
 function install_docker(){
     if [ "${OS_RELEASE}" == "focal" ]; then
         apt install docker.io -y
+        apt-mark hold docker.io
     else
         curl -fsSL ${DOCKER_LIST_URL} | sed "s@{{OS_RELEASE}}@${OS_RELEASE}@gi" > /etc/apt/sources.list.d/docker.list
         curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -
         apt update -y
         apt install docker-ce -y
-        mv /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.list.bak
+        apt-mark hold docker-ce
     fi
-    mv /lib/systemd/system/docker.service /lib/systemd/system/docker.service.bak
-    curl -fsSL ${DOCKER_CONFIG_DOWNLOAD_URL} > /lib/systemd/system/docker.service
-    systemctl daemon-reload
-    systemctl restart docker
+    
+    curl -fsSL ${DOCKER_CONFIG_DOWNLOAD_URL} > docker.service
+    SYSTEMD_EDITOR="mv docker.service" systemctl edit docker
+    systemctl daemon-reload && systemctl restart docker
 }
 
 function install_ctop(){
@@ -130,16 +123,15 @@ function install_osquery(){
     apt-get install osquery -y
 }
 
-disable_cloudinit
 setlocale
 sysupdate
 settimezone
 config_vim
 install_ohmyzsh
 install_docker
-install_ctop
 install_dc
-install_hey
-install_bat
-install_termshark
+#install_ctop
+#install_hey
+#install_bat
+#install_termshark
 #install_osquery
