@@ -3,7 +3,7 @@
 set -e
 
 VERSION=${VERSION:-"2.3.0"}
-BUILD_DIR=$(mktemp)
+BUILD_DIR=$(mktemp -d -t caddy2_build-XXXXXXXXXX)
 
 function clean(){
   info "Clean build dir: ${BUILD_DIR}"
