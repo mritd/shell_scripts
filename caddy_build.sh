@@ -83,7 +83,6 @@ function err(){
 }
 
 
-clean
 build
 create_config
 package
